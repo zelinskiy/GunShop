@@ -10,6 +10,10 @@ namespace GunShop.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+
+        public DbSet<Commodity> Commodities { get; set; }
+        public DbSet<CommodityType> CommoditiesTypes { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

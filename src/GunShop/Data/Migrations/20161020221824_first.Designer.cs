@@ -8,9 +8,10 @@ using GunShop.Data;
 namespace GunShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161020221824_first")]
+    partial class first
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rc2-20901")
@@ -69,29 +70,11 @@ namespace GunShop.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CommodityTypeId");
-
                     b.Property<int?>("CustomerId");
 
                     b.HasKey("Id");
 
                     b.ToTable("Commodities");
-                });
-
-            modelBuilder.Entity("GunShop.Models.CommodityType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Model");
-
-                    b.Property<string>("Size");
-
-                    b.Property<int>("Weight");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CommoditiesTypes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
