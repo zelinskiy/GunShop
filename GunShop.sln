@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F4F71442-41C9-4A5D-A7B0-542B86F55AE3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C911286C-78B1-4BE6-9889-1716D8988379}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GunShop", "src\GunShop\GunShop.xproj", "{592D2266-5F3C-4E18-8B3D-5D91926C12EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{592D2266-5F3C-4E18-8B3D-5D91926C12EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{592D2266-5F3C-4E18-8B3D-5D91926C12EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{592D2266-5F3C-4E18-8B3D-5D91926C12EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{592D2266-5F3C-4E18-8B3D-5D91926C12EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{592D2266-5F3C-4E18-8B3D-5D91926C12EA} = {F4F71442-41C9-4A5D-A7B0-542B86F55AE3}
+	EndGlobalSection
+EndGlobal
