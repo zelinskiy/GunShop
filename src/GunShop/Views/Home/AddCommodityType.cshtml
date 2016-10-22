@@ -16,41 +16,41 @@
         <div class="form-group">
             <label class="col-md-2 control-label">@Localizer["Manufacturer"]</label>
             <div class="col-md-10">
-                @Html.DropDownList(Localizer["Manufacturer"].ToString() , new SelectList(Model.ManufacturersPreviews, "Id", "Preview") )
+                @Html.DropDownList("ManufacturerId", new SelectList(Model.ManufacturersPreviews, "Id", "Preview"), new { @class= "btn-default btn-sm" })
                 <span asp-validation-for="ManufacturerId" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label">@Localizer["Model"]</label>
             <div class="col-md-10">
-                <input asp-for="Model" class="form-control" />
+                <input asp-for="Model" autocomplete="off" class="form-control" />
                 <span asp-validation-for="Model" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label">@Localizer["Size"]</label>
             <div class="col-md-10">
-                <input asp-for="Size" class="form-control" />
+                <input asp-for="Size" autocomplete="off" class="form-control" />
                 <span asp-validation-for="Size" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label">@Localizer["Weight"]</label>
             <div class="col-md-10">
-                <input asp-for="Weight" class="form-control" />
+                <input asp-for="Weight" autocomplete="off" class="form-control" />
                 <span asp-validation-for="Weight" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label">@Localizer["InitialCount"]</label>
             <div class="col-md-10">
-                <input asp-for="InitialCount" class="form-control" />
+                <input asp-for="InitialCount" autocomplete="off" class="form-control" />
                 <span asp-validation-for="InitialCount" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="@Localizer["Add"]" class="btn btn-default" />
+                <input type="submit" value="Add" class="btn btn-default" />
             </div>
         </div>
     </div>

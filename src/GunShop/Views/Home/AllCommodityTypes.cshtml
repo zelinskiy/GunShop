@@ -1,0 +1,57 @@
+@model IEnumerable<GunShop.ViewModels.HomeViewModels.CommodityTypeBO>
+
+@{
+    ViewData["Title"] = "AllCommodityTypes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Shop</h2>
+
+<a asp-controller="Home" asp-action="AddCommodityType">New</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Manufacturer
+            </th>
+            <th>
+                Model
+            </th>
+            <th>
+                Sizes
+            </th>
+            <th>
+                Weight
+            </th>
+            <th>
+                Available
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var ct in Model) {
+        <tr>
+            <td>
+                @ct.ManufacturerPreview.Preview
+            </td>
+            <td>
+                @ct.Model
+            </td>
+            <td>
+                @ct.Size
+            </td>
+            <td>
+                @ct.Weight
+            </td>
+            <td>
+                @ct.AvailableCount
+            </td>
+            <td>
+                <a asp-action="AddToChart" asp-route-id="@ct.Id">to chart</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

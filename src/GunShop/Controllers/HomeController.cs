@@ -34,28 +34,36 @@ namespace GunShop.Controllers
         public IActionResult Index()
         {
             var model = new IndexViewModel();
-            model.CommodityBOs = _commoditiesService.GetAll();
+            model.CommodityBOs = _commoditiesService.GetAllCommodities();
             return View(model);
         }
         
         [HttpPost]
-        public async Task<IActionResult> AddCommodityType(CommodityTypeViewModel model)
+        public async Task<IActionResult> AddCommodityType(CommodityTypeViewModel CommodityTypeViewModel)
         {
+            _logger.LogWarning($"Added Commiodity {CommodityTypeViewModel.Model}");
             if (ModelState.IsValid)
             {
-                _context.CommoditiesTypes.Add(new CommodityType()
+                var newtype = _context.CommoditiesTypes.Add(new CommodityType()
                 {
-                    Model = model.Model,
-                    Size = model.Size,
-                    Weight = model.Weight,
-                    ManufacturerId = model.ManufacturerId
+                    Model = CommodityTypeViewModel.Model,
+                    Size = CommodityTypeViewModel.Size,
+                    Weight = CommodityTypeViewModel.Weight,
+                    ManufacturerId = CommodityTypeViewModel.ManufacturerId
                 });
-                _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+                for (int i = 0; i < CommodityTypeViewModel.InitialCount; i++)
+                {
+                    _context.Commodities.Add(new Commodity { CommodityTypeId = newtype.Entity.Id });
+                }
+                await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             else
             {
-                return View(model);
+                _logger.LogError($"Can't add Commiodity {CommodityTypeViewModel.Model}");
+                _logger.LogError(ModelState.ValidationState.ToString());
+                return View(CommodityTypeViewModel);
             }
             
         }
@@ -75,6 +83,12 @@ namespace GunShop.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AllCommodityTypes()
+        {
+            return View(_commoditiesService.GetAllCommoditiesTypes());
+        }
+
         [HttpPost]
         public IActionResult SetLanguage(string culture, string returnUrl)
         {
@@ -86,6 +100,8 @@ namespace GunShop.Controllers
 
             return LocalRedirect(returnUrl);
         }
+
+
 
         public IActionResult Error()
         {

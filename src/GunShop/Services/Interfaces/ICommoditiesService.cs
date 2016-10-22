@@ -8,6 +8,7 @@ namespace GunShop.Services.Interfaces
 {
     public interface ICommoditiesService
     {
-        CommodityBO[] GetAll();
+        CommodityBO[] GetAllCommodities();
+        CommodityTypeBO[] GetAllCommoditiesTypes();
     }
 }

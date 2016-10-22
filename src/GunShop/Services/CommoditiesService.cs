@@ -18,7 +18,7 @@ namespace GunShop.Services
             this.context = _context;
         }
 
-        public CommodityBO[] GetAll()
+        public CommodityBO[] GetAllCommodities()
         {
             return context.Commodities.Join(
                 context.CommoditiesTypes,
@@ -34,6 +34,18 @@ namespace GunShop.Services
             )
             .ToArray();
         }
-        
+
+        public CommodityTypeBO[] GetAllCommoditiesTypes()
+        {
+            return context.CommoditiesTypes.Join(
+                context.Manufacturers,
+                ct => ct.ManufacturerId,
+                m => m.Id,
+                (ct, m) => new CommodityTypeBO(ct)
+                    .AddManufacturer(m)
+                    .AddAvailableCount(context.Commodities.Count(c => c.CommodityTypeId == ct.Id))
+                )
+            .ToArray();
+        }
     }
 }
