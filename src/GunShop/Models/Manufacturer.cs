@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace GunShop.Models
 {
-    public class Commodity
+    public class Manufacturer
     {
         public int Id { get; set; }
-        public int? OrderId { get; set; }
-        public int CommodityTypeId { get; set; }        
+        public string Name { get; set; }
+        public string Country { get; set; }
     }
 }

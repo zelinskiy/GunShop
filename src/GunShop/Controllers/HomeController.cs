@@ -7,6 +7,10 @@ using GunShop.Data;
 using GunShop.ViewModels.HomeViewModels;
 using GunShop.Models;
 using Microsoft.EntityFrameworkCore;
+using GunShop.Services.Interfaces;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace GunShop.Controllers
 {
@@ -14,33 +18,73 @@ namespace GunShop.Controllers
     {
 
         ApplicationDbContext _context;
+        ICommoditiesService _commoditiesService;
+        ILogger _logger;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(
+            ApplicationDbContext context,
+            ILoggerFactory loggerFactory,
+            ICommoditiesService commoditiesService)
         {
             _context = context;
+            _commoditiesService = commoditiesService;
+            _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
         public IActionResult Index()
         {
             var model = new IndexViewModel();
-            model.Commodities = _context
-                .Commodities                
-                .ToList();
-            var x = _context.Commodities.Join(
-                _context.CommoditiesTypes,
-                c => c.CommodityTypeId,
-                ct => ct.Id,
-                (c, ct) => new Commodity()
-                    {
-                        Id = c.Id,
-                        CommodityTypeId = c.CommodityTypeId,
-                        CustomerId = c.CustomerId,
-                        Weight = ct.Weight,
-                        Size = ct.Size,
-                        Model = ct.Model
-                    });
-            model.Commodities = x.ToArray();
+            model.CommodityBOs = _commoditiesService.GetAll();
             return View(model);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> AddCommodityType(CommodityTypeViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.CommoditiesTypes.Add(new CommodityType()
+                {
+                    Model = model.Model,
+                    Size = model.Size,
+                    Weight = model.Weight,
+                    ManufacturerId = model.ManufacturerId
+                });
+                _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(model);
+            }
+            
+        }
+        
+        [HttpGet]
+        public IActionResult AddCommodityType()
+        {
+            var model = new CommodityTypeViewModel()
+            {
+                ManufacturersPreviews = _context
+                    .Manufacturers
+                    .ToList()
+                    .Select(m => new ManufacturerPreview(m))
+                    .ToArray(),
+                ModelsPreviews = _context.CommoditiesTypes.Select(ct => ct.Model).ToArray()
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+
+            return LocalRedirect(returnUrl);
         }
 
         public IActionResult Error()

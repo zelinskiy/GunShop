@@ -11,5 +11,6 @@ namespace GunShop.Models
         public string Model { get; set; }
         public string Size { get; set; }
         public int Weight { get; set; }
+        public int ManufacturerId { get; set; }
     }
 }

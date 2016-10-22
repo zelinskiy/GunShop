@@ -12,6 +12,11 @@ using Microsoft.Extensions.Logging;
 using GunShop.Data;
 using GunShop.Models;
 using GunShop.Services;
+using GunShop.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 namespace GunShop
 {
@@ -47,11 +52,39 @@ namespace GunShop
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddMvc()
+            .AddViewLocalization(
+                LanguageViewLocationExpanderFormat.Suffix,
+                opts => opts.ResourcesPath = "Resources")
+            .AddDataAnnotationsLocalization();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+            services.AddTransient<ICommoditiesService, CommoditiesService>();
+
+            services.Configure<RequestLocalizationOptions>(
+                opts =>
+                {
+                    var supportedCultures = new[]
+                    {
+                        new CultureInfo("en"),
+                        new CultureInfo("ru"),
+                    };
+
+                    opts.DefaultRequestCulture = new RequestCulture("en");
+                    // Formatting numbers, dates, etc.
+                    opts.SupportedCultures = supportedCultures;
+                    // UI strings that we have localized.
+                    opts.SupportedUICultures = supportedCultures;
+                });
+
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +103,10 @@ namespace GunShop
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(options.Value);
+
 
             app.UseStaticFiles();
 

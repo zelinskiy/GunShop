@@ -4,8 +4,11 @@
 }
 
 @{
-    foreach(var c in Model.Commodities)
+    <h1>@Model.CommodityBOs.Count()</h1>
+    <h1><a asp-controller="Home" asp-action="AddCommodityType">New</a></h1>
+    @foreach(var c in Model.CommodityBOs)
     {
-        <h1>@c.Model</h1>
+        <p> @c.ManufacturerName</p>
+
     }
 }

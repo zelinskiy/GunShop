@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GunShop.Services
+namespace GunShop.Services.Interfaces
 {
     public interface ISmsSender
     {

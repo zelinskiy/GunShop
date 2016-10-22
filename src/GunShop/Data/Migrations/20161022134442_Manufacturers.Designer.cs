@@ -8,9 +8,10 @@ using GunShop.Data;
 namespace GunShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161022134442_Manufacturers")]
+    partial class Manufacturers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rc2-20901")
@@ -71,22 +72,11 @@ namespace GunShop.Data.Migrations
 
                     b.Property<int>("CommodityTypeId");
 
-                    b.Property<int?>("OrderId");
+                    b.Property<int?>("CustomerId");
 
                     b.HasKey("Id");
 
                     b.ToTable("Commodities");
-                });
-
-            modelBuilder.Entity("GunShop.Models.CommodityInChart", b =>
-                {
-                    b.Property<int>("CommodityId");
-
-                    b.Property<int>("CustomerId");
-
-                    b.HasKey("CommodityId", "CustomerId");
-
-                    b.ToTable("CommoditiesInCharts");
                 });
 
             modelBuilder.Entity("GunShop.Models.CommodityType", b =>
@@ -119,21 +109,6 @@ namespace GunShop.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Manufacturers");
-                });
-
-            modelBuilder.Entity("GunShop.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("CustomerId");
-
-                    b.Property<DateTime>("DateTime")
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>

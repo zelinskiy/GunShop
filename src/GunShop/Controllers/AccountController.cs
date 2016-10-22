@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using GunShop.Models;
 using GunShop.Models.AccountViewModels;
-using GunShop.Services;
+using GunShop.Services.Interfaces;
 
 namespace GunShop.Controllers
 {

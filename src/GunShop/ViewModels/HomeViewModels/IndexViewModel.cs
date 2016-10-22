@@ -6,6 +6,6 @@ namespace GunShop.ViewModels.HomeViewModels
 {
     public class IndexViewModel
     {
-        public IEnumerable<Commodity> Commodities { get; set; }
+        public IEnumerable<CommodityBO> CommodityBOs { get; set; }
     }
 }

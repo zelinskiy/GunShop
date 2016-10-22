@@ -1,0 +1,65 @@
+@model GunShop.ViewModels.HomeViewModels.CommodityTypeViewModel
+
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = "Add new Commodity Type";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1>@Localizer["Add new commodity"]</h1>
+
+<form asp-controller="Home" asp-action="AddCommodityType">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">@Localizer["Manufacturer"]</label>
+            <div class="col-md-10">
+                @Html.DropDownList(Localizer["Manufacturer"].ToString() , new SelectList(Model.ManufacturersPreviews, "Id", "Preview") )
+                <span asp-validation-for="ManufacturerId" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">@Localizer["Model"]</label>
+            <div class="col-md-10">
+                <input asp-for="Model" class="form-control" />
+                <span asp-validation-for="Model" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">@Localizer["Size"]</label>
+            <div class="col-md-10">
+                <input asp-for="Size" class="form-control" />
+                <span asp-validation-for="Size" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">@Localizer["Weight"]</label>
+            <div class="col-md-10">
+                <input asp-for="Weight" class="form-control" />
+                <span asp-validation-for="Weight" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">@Localizer["InitialCount"]</label>
+            <div class="col-md-10">
+                <input asp-for="InitialCount" class="form-control" />
+                <span asp-validation-for="InitialCount" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="@Localizer["Add"]" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
