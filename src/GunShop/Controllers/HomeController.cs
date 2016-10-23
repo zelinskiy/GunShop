@@ -20,15 +20,37 @@ namespace GunShop.Controllers
         ApplicationDbContext _context;
         ICommoditiesService _commoditiesService;
         ILogger _logger;
+        IChartService _chartService;
 
         public HomeController(
             ApplicationDbContext context,
             ILoggerFactory loggerFactory,
+            IChartService chartService,
             ICommoditiesService commoditiesService)
         {
             _context = context;
             _commoditiesService = commoditiesService;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _chartService = chartService;
+        }
+
+        private int CustomerId
+        {
+            get
+            {
+                if (!Request.Cookies.ContainsKey("USERID"))
+                {
+                    var tempUser = _context.Customers.Add(new Customer { IsTemp = true });
+                    _context.SaveChanges();
+                    Response.Cookies.Append("USERID", tempUser.Entity.Id.ToString());
+                    return tempUser.Entity.Id;
+                }
+                else
+                {
+                    return int.Parse(Request.Cookies["USERID"]);
+                }
+                
+            }
         }
 
         public IActionResult Index()
@@ -40,29 +62,15 @@ namespace GunShop.Controllers
         
         [HttpPost]
         public async Task<IActionResult> AddCommodityType(CommodityTypeViewModel CommodityTypeViewModel)
-        {
-            _logger.LogWarning($"Added Commiodity {CommodityTypeViewModel.Model}");
+        {            
             if (ModelState.IsValid)
             {
-                var newtype = _context.CommoditiesTypes.Add(new CommodityType()
-                {
-                    Model = CommodityTypeViewModel.Model,
-                    Size = CommodityTypeViewModel.Size,
-                    Weight = CommodityTypeViewModel.Weight,
-                    ManufacturerId = CommodityTypeViewModel.ManufacturerId
-                });
-                await _context.SaveChangesAsync();
-                for (int i = 0; i < CommodityTypeViewModel.InitialCount; i++)
-                {
-                    _context.Commodities.Add(new Commodity { CommodityTypeId = newtype.Entity.Id });
-                }
-                await _context.SaveChangesAsync();
+                await _commoditiesService.AddCommodityType(CommodityTypeViewModel);
                 return RedirectToAction("Index");
             }
             else
             {
                 _logger.LogError($"Can't add Commiodity {CommodityTypeViewModel.Model}");
-                _logger.LogError(ModelState.ValidationState.ToString());
                 return View(CommodityTypeViewModel);
             }
             
@@ -89,6 +97,45 @@ namespace GunShop.Controllers
             return View(_commoditiesService.GetAllCommoditiesTypes());
         }
 
+        
+
+        [HttpPost]
+        public IActionResult AddCommodityToChart(int commodityTypeId)
+        {
+            if (_commoditiesService.HasAvailableCommodity(commodityTypeId))
+            {
+                _chartService.AddToChart(CustomerId, commodityTypeId);
+            }
+            else
+            {
+                _logger.LogWarning("Trying to add commodity whish is not available");
+            }
+            
+            return RedirectToAction("MyChart");            
+        }
+
+        [HttpGet]
+        public IActionResult MyChart()
+        {
+            return View("/Views/Home/Chart.cshtml", _chartService.OnChart(CustomerId));
+        }
+
+        [HttpPost]
+        public IActionResult RemoveCommodityFromChart(int commodityId)
+        {
+            _chartService.RemoveFromChart(CustomerId, commodityId);
+            return RedirectToAction("MyChart");
+        }
+
+        [HttpGet]
+        public IActionResult ClearAllAnonymousCharts()
+        {
+            _chartService.ClearAllAnonymousCharts();
+            return RedirectToAction("Index");
+        }
+
+        //******************************************************************************
+
         [HttpPost]
         public IActionResult SetLanguage(string culture, string returnUrl)
         {
@@ -100,8 +147,6 @@ namespace GunShop.Controllers
 
             return LocalRedirect(returnUrl);
         }
-
-
 
         public IActionResult Error()
         {

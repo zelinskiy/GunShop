@@ -1,4 +1,5 @@
 ﻿using GunShop.Models;
+using GunShop.Models.Interfaces;
 using Microsoft.AspNetCore.Razor.Tools;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace GunShop.ViewModels.HomeViewModels
         }
     }
 
-    public class CommodityTypeViewModel
+    public class CommodityTypeViewModel : ICommodityType
     {
         public IEnumerable<string> ModelsPreviews { get; set; }
         public IEnumerable<ManufacturerPreview> ManufacturersPreviews { get; set; }

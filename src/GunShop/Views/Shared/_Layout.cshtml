@@ -33,8 +33,12 @@
                     <li><a asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-controller="Home" asp-action="AllCommodityTypes">Shop</a></li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a asp-controller="Home" asp-action="MyChart">Chart</a></li>
+                </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
+            
         </div>
     </div>
     <div class="container body-content">

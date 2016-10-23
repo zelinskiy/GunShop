@@ -66,6 +66,8 @@ namespace GunShop
 
             services.AddTransient<ICommoditiesService, CommoditiesService>();
 
+            services.AddTransient<IChartService, ChartService>();
+
             services.Configure<RequestLocalizationOptions>(
                 opts =>
                 {

@@ -16,6 +16,7 @@ namespace GunShop.Data
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<CommodityInChart> CommoditiesInCharts { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

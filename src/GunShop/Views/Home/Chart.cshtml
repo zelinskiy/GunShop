@@ -1,0 +1,31 @@
+@model IEnumerable<GunShop.ViewModels.HomeViewModels.CommodityBO>
+
+@{
+    ViewData["Title"] = "AllCommodityTypes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Model
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var c in Model) {
+        <tr>
+            <td>
+                @c.Model
+            </td>
+            <td>
+                <form asp-controller="Home" asp-action="RemoveCommodityFromChart" method="post" asp-route-commodityId="@c.Id">
+                    <button type="submit" class="btn btn-link">Remove from chart</button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

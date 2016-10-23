@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using GunShop.Models;
 using GunShop.Models.AccountViewModels;
 using GunShop.Services.Interfaces;
+using GunShop.Data;
 
 namespace GunShop.Controllers
 {
@@ -22,12 +23,14 @@ namespace GunShop.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly ApplicationDbContext _context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
+            ApplicationDbContext context,
             ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
@@ -35,6 +38,7 @@ namespace GunShop.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _context = context;
         }
 
         //
@@ -109,6 +113,13 @@ namespace GunShop.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+
+                    var tempUser = _context.Customers.First(c => c.Id == Int32.Parse(Request.Cookies["USERID"]));
+                    tempUser.IsTemp = false;
+                    tempUser.ApplicationUserId = user.Id;
+                    tempUser.Email = model.Email;
+                    _context.Customers.Update(tempUser);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

@@ -16,6 +16,7 @@ namespace GunShop.ViewModels.HomeViewModels
         
         public CommodityTypeBO(CommodityType t)
         {
+            this.Id = t.Id;
             this.Model = t.Model;
             this.Size = t.Size;
             this.Weight = t.Weight;

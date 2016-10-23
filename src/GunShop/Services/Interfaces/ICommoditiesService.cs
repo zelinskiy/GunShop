@@ -1,4 +1,6 @@
-﻿using GunShop.ViewModels.HomeViewModels;
+﻿using GunShop.Models;
+using GunShop.Models.Interfaces;
+using GunShop.ViewModels.HomeViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +12,10 @@ namespace GunShop.Services.Interfaces
     {
         CommodityBO[] GetAllCommodities();
         CommodityTypeBO[] GetAllCommoditiesTypes();
+
+        Commodity GetAvailableCommodity(int commodityType);
+        bool HasAvailableCommodity(int commodityType);
+
+        Task AddCommodityType(ICommodityType ct);
     }
 }
