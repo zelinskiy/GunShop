@@ -17,5 +17,6 @@ namespace GunShop.Services.Interfaces
         bool HasAvailableCommodity(int commodityType);
 
         Task AddCommodityType(ICommodityType ct);
+        Task AddManufacturer(IManufacturer man);
     }
 }

@@ -4,11 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using GunShop.Models.Interfaces;
 
-namespace GunShop.Models
+namespace GunShop.ViewModels.HomeViewModels
 {
-    public class Manufacturer : IManufacturer
+    public class ManufacturerViewModel : IManufacturer
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Country { get; set; }
     }

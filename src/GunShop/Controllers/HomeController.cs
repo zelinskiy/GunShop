@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GunShop.Data;
 using GunShop.ViewModels.HomeViewModels;
 using GunShop.Models;
-using Microsoft.EntityFrameworkCore;
 using GunShop.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Localization;
@@ -89,6 +87,28 @@ namespace GunShop.Controllers
                 ModelsPreviews = _context.CommoditiesTypes.Select(ct => ct.Model).ToArray()
             };
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddManufacturer(ManufacturerViewModel ManufacturerViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                await _commoditiesService.AddManufacturer(ManufacturerViewModel);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                _logger.LogError($"Can't add Manufacturer { ManufacturerViewModel.Name }");
+                return View(ManufacturerViewModel);
+            }
+
+        }
+
+        [HttpGet]
+        public IActionResult AddManufacturer()
+        {
+            return View();
         }
 
         [HttpGet]

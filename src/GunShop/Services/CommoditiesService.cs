@@ -78,6 +78,17 @@ namespace GunShop.Services
             .ToArray();
         }
 
+        public async Task AddManufacturer(IManufacturer man)
+        {
+            _context.Manufacturers.Add(new Manufacturer
+            {
+                Name = man.Name,
+                Country = man.Country
+            });
+            await _context.SaveChangesAsync();
+            _logger.LogWarning($"Added Manufacturer {man.Name}");
+        }
+
         public bool HasAvailableCommodity(int commodityType)
         {
             return _context.Commodities.Count(c => c.CommodityTypeId == commodityType) > 0;
