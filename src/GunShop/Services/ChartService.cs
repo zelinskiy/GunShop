@@ -82,7 +82,8 @@ namespace GunShop.Services
         public void RemoveFromChart(int customerId, int commodityId)
         {
             var toBeRemoved = _context.CommoditiesInCharts
-                .FirstOrDefault(cic => cic.CommodityId == commodityId && cic.CustomerId == customerId);
+                .FirstOrDefault(cic => cic.CommodityId == commodityId 
+                && cic.CustomerId == customerId);
             if(toBeRemoved == null)
             {
                 throw new ArgumentException($"Can't find item {commodityId} on chart {customerId}");
