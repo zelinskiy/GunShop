@@ -9,6 +9,7 @@ using GunShop.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
+using GunShop.Services;
 
 namespace GunShop.Controllers
 {
@@ -19,17 +20,20 @@ namespace GunShop.Controllers
         ICommoditiesService _commoditiesService;
         ILogger _logger;
         IChartService _chartService;
+        CategorizationService _categorizationService;
 
         public HomeController(
             ApplicationDbContext context,
             ILoggerFactory loggerFactory,
             IChartService chartService,
-            ICommoditiesService commoditiesService)
+            ICommoditiesService commoditiesService,
+            CategorizationService categorizationService)
         {
             _context = context;
             _commoditiesService = commoditiesService;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _chartService = chartService;
+            _categorizationService = categorizationService;
         }
 
         private int CustomerId
@@ -153,6 +157,9 @@ namespace GunShop.Controllers
             _chartService.ClearAllAnonymousCharts();
             return RedirectToAction("Index");
         }
+
+        //************************Categories********************************************
+
 
         //******************************************************************************
 

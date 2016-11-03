@@ -10,7 +10,7 @@ namespace GunShop.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
-        public int CathegoryId { get; set; }
+        public int CategoryId { get; set; }
         public string AvailableValues { get; set; }
     }
 }
