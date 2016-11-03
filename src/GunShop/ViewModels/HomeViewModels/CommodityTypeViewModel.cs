@@ -27,6 +27,8 @@ namespace GunShop.ViewModels.HomeViewModels
 
     public class CommodityTypeViewModel : ICommodityType
     {
+        public int Id { get; set; }
+
         public IEnumerable<string> ModelsPreviews { get; set; }
         public IEnumerable<ManufacturerPreview> ManufacturersPreviews { get; set; }
 

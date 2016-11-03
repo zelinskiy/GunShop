@@ -7,6 +7,7 @@ namespace GunShop.Models.Interfaces
 {
     public interface ICommodityType
     {
+        int Id { get; set; }
         string Model { get; set; }
         string Size { get; set; }
         int Weight { get; set; }

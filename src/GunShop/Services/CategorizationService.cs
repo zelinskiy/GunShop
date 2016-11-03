@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GunShop.Data;
 using GunShop.Models;
 using Microsoft.Extensions.Logging;
+using GunShop.Models.Interfaces;
 
 namespace GunShop.Services
 {
@@ -51,7 +52,7 @@ namespace GunShop.Services
             _context.SaveChanges();
         }
 
-        public void RemoveCommodityTypeFromCategory(CommodityType ct, Category cat)
+        public void RemoveCommodityTypeFromCategory(ICommodityType ct, ICategory cat)
         {
             var oldConnection =
                 _context.CommoditiesTypesInCathegories.FirstOrDefault(
@@ -72,7 +73,7 @@ namespace GunShop.Services
             _context.SaveChanges();
         }
 
-        public void AddCharacteristicToCategory(Category cat, Characteristic charact)
+        public void AddCharacteristicToCategory(ICategory cat, Characteristic charact)
         {
             charact.CategoryId = cat.Id;
             if(_context.Characteristics.Count(ch=>ch.Id == charact.Id) > 0)
@@ -87,7 +88,7 @@ namespace GunShop.Services
         }
 
         public void AddCategory(
-            Category cat, 
+            ICategory cat, 
             IEnumerable<Characteristic> characteristics)
         {
             _context.Categories.Add(new Category

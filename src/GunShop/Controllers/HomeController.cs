@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
 using GunShop.Services;
+using System.Collections.Generic;
 
 namespace GunShop.Controllers
 {
@@ -160,6 +161,30 @@ namespace GunShop.Controllers
 
         //************************Categories********************************************
 
+        [HttpGet]
+        public IActionResult AddCategory()
+        {
+            var model = new CategoryViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddCategory(CategoryViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _categorizationService.AddCategory(model, model.Characteristics);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                _logger.LogError($"Can't add Category {model.Name}");
+                return View(model);
+            }
+
+        }
+
+        
 
         //******************************************************************************
 
