@@ -8,12 +8,17 @@
 <h2>Add Category</h2>
 
 
-<div ng-controller="TestController">
-    <div ng-repeat="item in list">
-        <label>Input {{$index+1}}:</label>
-        <input ng-model="item.value" type="text" />
-    </div>
-    {{list}}
+<div id="extendableInputsList" ng-controller="TestController">
+    <div ng-repeat="char in charsList">
+        <label>Characteristic {{$index+1}}:</label>
+        <span>
+            <input ng-model="char.name" type="text" />
+            <label>Possvals:</label>
+            <input ng-model="char.possvals" type="text" />
+        </span>
+    </div> 
+    <label>Characteristic N:</label>
+    <input ng-keypress="extendDown($event)" type="text" />
 </div>
 
 
