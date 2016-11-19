@@ -22,7 +22,7 @@ function getData() {
 
 function sendData() {
     $.post({
-        url: "/Home/AddCategory",
+        url: "/Category/AddCategory",
         data: getData(),
         success: function (d) {
             console.log(d);

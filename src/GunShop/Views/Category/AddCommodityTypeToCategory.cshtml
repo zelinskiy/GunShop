@@ -1,0 +1,56 @@
+@model GunShop.ViewModels.HomeViewModels.AddCommodityTypeToCategoryViewModel
+
+@{
+    ViewData["Title"] = "AddCommodityTypeToCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>AddCommodityTypeToCategory</h2>
+
+@foreach (var c in Model.Characteristics)
+{
+    <p>@c.Name @Html.DropDownList("charval_" + c.Id,
+              new SelectList(c.AvailableValues.Split(';')), 
+              new { @class = "btn-default btn-sm charval" }) </p>
+}
+
+<form asp-action="AddCommodityTypeToCategory">
+    <div class="form-horizontal">
+        <h4>CommodityType</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" asp-for="CommodityTypeId" class="form-control" />
+        <input type="hidden" asp-for="CategoryId" class="form-control" />
+
+        <div class="form-group">
+            <label asp-for="CommodityTypeModel" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CommodityTypeModel" class="form-control" disabled />
+                <span asp-validation-for="CommodityTypeModel" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoryName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CategoryName" class="form-control" disabled/>
+                <span asp-validation-for="CategoryName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="submitButton" onclick="sendData()" type="button" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="/js/AddCommodityTypeToCategory.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+}

@@ -1,4 +1,4 @@
-@model IEnumerable<GunShop.ViewModels.HomeViewModels.CommodityTypeBO>
+@model GunShop.ViewModels.HomeViewModels.AllCommodityTypesViewModel
 
 @{
     ViewData["Title"] = "AllCommodityTypes";
@@ -7,7 +7,12 @@
 
 <h2>Shop</h2>
 
-<a asp-controller="Home" asp-action="AddCommodityType">New</a>
+<h4>Categories:</h4>
+
+@foreach (var cat in Model.SubCategories)
+{
+    <p><a asp-action="AllCommodityTypes" asp-route-categoryId="@cat.Id">@cat.Name</a></p>
+}
 
 <table class="table">
     <thead>
@@ -28,10 +33,11 @@
                 Available
             </th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var ct in Model) {
+@foreach (var ct in Model.CommoditiesTypes) {
         <tr>
             <td>
                 @ct.ManufacturerPreview.Preview
@@ -61,6 +67,9 @@
                         <button type="submit" class="btn btn-link">Notify when available</button>
                     </form>
                 }
+            </td>
+            <td>
+                <a asp-controller="Category" asp-action="SelectCategoryToAdd" asp-route-commodityid="@ct.Id">Add to Category</a>
             </td>
         </tr>
 }

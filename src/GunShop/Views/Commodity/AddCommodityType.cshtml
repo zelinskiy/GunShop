@@ -10,7 +10,7 @@
 
 <h1>@Localizer["Add new commodity"]</h1>
 
-<form asp-controller="Home" asp-action="AddCommodityType">
+<form asp-controller="Commodity" asp-action="AddCommodityType">
     <div class="form-horizontal">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -20,6 +20,7 @@
                 <span asp-validation-for="ManufacturerId" class="text-danger" />
             </div>
         </div>
+
         <div class="form-group">
             <label class="col-md-2 control-label">@Localizer["Model"]</label>
             <div class="col-md-10">

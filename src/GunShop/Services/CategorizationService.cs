@@ -36,7 +36,7 @@ namespace GunShop.Services
                 var charval = charvals.FirstOrDefault(cv => cv.CharacteristicId == c.Id);
                 if (charval != null)
                 {
-                    SetCharacteristicValue(charval);
+                    SetCharacteristicValue(c, ct, charval.Value);
                 }
                 else
                 {
@@ -91,15 +91,17 @@ namespace GunShop.Services
             ICategory cat, 
             IEnumerable<Characteristic> characteristics)
         {
-            _context.Categories.Add(new Category
+            var newcat = new Category
             {
                 MasterCategoryId = cat.MasterCategoryId,
                 Name = cat.Name
-            });
+            };
+
+            _context.Categories.Add(newcat);
             _context.SaveChanges();
             foreach(var c in characteristics)
             {
-                AddCharacteristicToCategory(cat, c);
+                AddCharacteristicToCategory(newcat, c);
             }
 
         }
@@ -123,7 +125,7 @@ namespace GunShop.Services
             if (!possvals.Contains(value))
             {
                 throw new ArgumentException($"Value {value} not allowed for " +
-                                    "characteristic {charact.Name}({charact.Id})");
+                                    $"characteristic {charact.Name}({charact.Id})");
             }
 
             if (oldVal == null)
@@ -143,13 +145,23 @@ namespace GunShop.Services
             _context.SaveChanges();
         }
 
-        public void SetCharacteristicValue(CharacteristicValue charval)
+        public IEnumerable<Category> GetSubCategories(int categoryId)
         {
-            SetCharacteristicValue(
-                new Characteristic { Id = charval.CharacteristicId },
-                new CommodityType { Id = charval.CommodityTypeId },
-                charval.Value);
+            return _context
+                .Categories
+                .Where(x => x.MasterCategoryId == categoryId)
+                .ToArray();
         }
+
+        public IEnumerable<int> CommoditiesTypesIdsInCategory(int categoryId)
+        {
+            return _context
+                .CommoditiesTypesInCathegories
+                .Where(ctic => ctic.CategoryId == categoryId)
+                .Select(ctic => ctic.CommodityTypeId)
+                .ToArray();
+        }
+
 
         public static IEnumerable<string> PossibleValsFromString(string possvals)
         {

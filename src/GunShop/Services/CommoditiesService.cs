@@ -46,7 +46,7 @@ namespace GunShop.Services
             await _context.SaveChangesAsync();
         }
 
-        public CommodityBO[] GetAllCommodities()
+        public IEnumerable<CommodityBO> GetAllCommodities()
         {
             return _context.Commodities.Join(
                 _context.CommoditiesTypes,
@@ -63,7 +63,7 @@ namespace GunShop.Services
             .ToArray();
         }
 
-        public CommodityTypeBO[] GetAllCommoditiesTypes()
+        public IEnumerable<CommodityTypeBO> GetAllCommoditiesTypes()
         {
             return _context.CommoditiesTypes.Join(
                 _context.Manufacturers,

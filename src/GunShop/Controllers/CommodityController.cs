@@ -33,6 +33,20 @@ namespace GunShop.Controllers
             _categorizationService = categorizationService;
         }
 
+        [HttpGet]
+        public IActionResult AddCommodityType()
+        {
+            var model = new CommodityTypeViewModel()
+            {
+                ManufacturersPreviews = _context
+                    .Manufacturers
+                    .ToList()
+                    .Select(m => new ManufacturerPreview(m))
+                    .ToArray(),
+                ModelsPreviews = _context.CommoditiesTypes.Select(ct => ct.Model).ToArray()
+            };
+            return View(model);
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddCommodityType(CommodityTypeViewModel CommodityTypeViewModel)
@@ -49,20 +63,11 @@ namespace GunShop.Controllers
             }
 
         }
-
+        
         [HttpGet]
-        public IActionResult AddCommodityType()
+        public IActionResult AddManufacturer()
         {
-            var model = new CommodityTypeViewModel()
-            {
-                ManufacturersPreviews = _context
-                    .Manufacturers
-                    .ToList()
-                    .Select(m => new ManufacturerPreview(m))
-                    .ToArray(),
-                ModelsPreviews = _context.CommoditiesTypes.Select(ct => ct.Model).ToArray()
-            };
-            return View(model);
+            return View();
         }
 
         [HttpPost]
@@ -80,17 +85,29 @@ namespace GunShop.Controllers
             }
 
         }
+        
 
         [HttpGet]
-        public IActionResult AddManufacturer()
+        public IActionResult AllCommodityTypes(int? categoryId)
         {
-            return View();
-        }
+            var model = new AllCommodityTypesViewModel();
+            if (categoryId != null)
+            {
+                model.SubCategories = _categorizationService.GetSubCategories(categoryId.Value);
+                var inCategory = _categorizationService.CommoditiesTypesIdsInCategory(categoryId.Value);
+                model.CommoditiesTypes = _commoditiesService
+                    .GetAllCommoditiesTypes()
+                    .Where(ctbo => inCategory.Contains(ctbo.Id))
+                    .ToArray();
+            }
+            else
+            {
+                var rootCategory = _context.Categories.FirstOrDefault(c => c.MasterCategoryId == null);
+                model.SubCategories = _categorizationService.GetSubCategories(rootCategory.Id);
+                model.CommoditiesTypes = _commoditiesService.GetAllCommoditiesTypes();
+            }
 
-        [HttpGet]
-        public async Task<IActionResult> AllCommodityTypes()
-        {
-            return View(_commoditiesService.GetAllCommoditiesTypes());
+            return View(model);
         }
     }
 }

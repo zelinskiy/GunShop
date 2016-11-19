@@ -19,6 +19,7 @@ namespace GunShop.Controllers
 
         ApplicationDbContext _context;
         ICommoditiesService _commoditiesService;
+        CategorizationService _categorizationService;
         ILogger _logger;
 
         public HomeController(
@@ -31,31 +32,16 @@ namespace GunShop.Controllers
             _context = context;
             _commoditiesService = commoditiesService;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _categorizationService = categorizationService;
         }
 
-        private int CustomerId
-        {
-            get
-            {
-                if (!Request.Cookies.ContainsKey("USERID"))
-                {
-                    var tempUser = _context.Customers.Add(new Customer { IsTemp = true });
-                    _context.SaveChanges();
-                    Response.Cookies.Append("USERID", tempUser.Entity.Id.ToString());
-                    return tempUser.Entity.Id;
-                }
-                else
-                {
-                    return int.Parse(Request.Cookies["USERID"]);
-                }
-                
-            }
-        }
 
-        public IActionResult Index()
+        public IActionResult Index(int? categoryId)
         {
             var model = new IndexViewModel();
             model.CommodityBOs = _commoditiesService.GetAllCommodities();
+
+            
             return View(model);
         }
         

@@ -1,0 +1,17 @@
+@model GunShop.ViewModels.HomeViewModels.SelectCategoryToAddViewModel
+
+@{
+    ViewData["Title"] = "SelectCategoryToAdd";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Select Category</h2>
+
+@foreach (var cat in Model.Categories)
+{
+    <p><a asp-action="AddCommodityTypeToCategory"
+          asp-route-commodityid="@Model.CommodityTypeId"
+          asp-route-categoryid="@cat.Id">
+        @cat.Name
+    </a></p>
+}

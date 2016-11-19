@@ -10,8 +10,8 @@ namespace GunShop.Services.Interfaces
 {
     public interface ICommoditiesService
     {
-        CommodityBO[] GetAllCommodities();
-        CommodityTypeBO[] GetAllCommoditiesTypes();
+        IEnumerable<CommodityBO> GetAllCommodities();
+        IEnumerable<CommodityTypeBO> GetAllCommoditiesTypes();
 
         Commodity GetAvailableCommodity(int commodityType);
         bool HasAvailableCommodity(int commodityType);
