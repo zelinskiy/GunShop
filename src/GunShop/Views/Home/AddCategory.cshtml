@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <h2>Add Category</h2>
 
 
@@ -30,8 +31,7 @@
         <div class="form-group">
             <label asp-for="MasterCategoryId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="MasterCategoryId" class="form-control" />
-                <span asp-validation-for="MasterCategoryId" class="text-danger" />
+                @Html.DropDownList("MasterCategoryId", new SelectList(Model.AllCategories, "Id", "Name"), new { @class = "btn-default btn-sm" })
             </div>
         </div>
         <div class="form-group">
@@ -43,7 +43,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input id="submitButton" type="button" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -56,5 +56,6 @@
 </div>
 
 @section Scripts {
+    <script src="/js/AddCategory.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

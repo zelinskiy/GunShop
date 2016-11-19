@@ -165,6 +165,7 @@ namespace GunShop.Controllers
         public IActionResult AddCategory()
         {
             var model = new CategoryViewModel();
+            model.AllCategories = _context.Categories.ToArray();
             return View(model);
         }
 
@@ -174,6 +175,7 @@ namespace GunShop.Controllers
             if (ModelState.IsValid)
             {
                 _categorizationService.AddCategory(model, model.Characteristics);
+                
                 return RedirectToAction("Index");
             }
             else
