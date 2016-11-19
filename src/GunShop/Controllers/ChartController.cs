@@ -1,27 +1,25 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using GunShop.Data;
-using GunShop.ViewModels.HomeViewModels;
 using GunShop.Models;
-using GunShop.Services.Interfaces;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Http;
 using GunShop.Services;
-using System.Collections.Generic;
+using GunShop.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace GunShop.Controllers
 {
-    public class HomeController : Controller
+    public class ChartController : Controller
     {
-
         ApplicationDbContext _context;
         ICommoditiesService _commoditiesService;
         ILogger _logger;
+        IChartService _chartService;
+        CategorizationService _categorizationService;
 
-        public HomeController(
+        public ChartController(
             ApplicationDbContext context,
             ILoggerFactory loggerFactory,
             IChartService chartService,
@@ -31,6 +29,8 @@ namespace GunShop.Controllers
             _context = context;
             _commoditiesService = commoditiesService;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _chartService = chartService;
+            _categorizationService = categorizationService;
         }
 
         private int CustomerId
@@ -48,33 +48,47 @@ namespace GunShop.Controllers
                 {
                     return int.Parse(Request.Cookies["USERID"]);
                 }
-                
+
             }
         }
 
-        public IActionResult Index()
-        {
-            var model = new IndexViewModel();
-            model.CommodityBOs = _commoditiesService.GetAllCommodities();
-            return View(model);
-        }
-        
-        
+
+
+
+
         [HttpPost]
-        public IActionResult SetLanguage(string culture, string returnUrl)
+        public IActionResult AddCommodityToChart(int commodityTypeId)
         {
-            Response.Cookies.Append(
-                CookieRequestCultureProvider.DefaultCookieName,
-                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
-            );
+            if (_commoditiesService.HasAvailableCommodity(commodityTypeId))
+            {
+                _chartService.AddToChart(CustomerId, commodityTypeId);
+            }
+            else
+            {
+                _logger.LogWarning("Trying to add commodity whish is not available");
+            }
 
-            return LocalRedirect(returnUrl);
+            return RedirectToAction("MyChart");
         }
 
-        public IActionResult Error()
+        [HttpGet]
+        public IActionResult MyChart()
         {
-            return View();
+            return View("/Views/Chart/Chart.cshtml", _chartService.OnChart(CustomerId));
+        }
+
+        [HttpPost]
+        public IActionResult RemoveCommodityFromChart(int commodityId)
+        {
+            _chartService.RemoveFromChart(CustomerId, commodityId);
+            return RedirectToAction("MyChart");
+        }
+
+        [HttpGet]
+        public IActionResult ClearAllAnonymousCharts()
+        {
+            _chartService.ClearAllAnonymousCharts();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
