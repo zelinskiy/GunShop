@@ -48,8 +48,24 @@ namespace GunShop.Services
                 CategoryId = cat.Id,
                 CommodityTypeId = ct.Id
             };
+
             _context.CommoditiesTypesInCathegories.Add(newConnection);
             _context.SaveChanges();
+
+            int? topCategoryId = cat.MasterCategoryId;
+
+            while(!(topCategoryId == null))
+            {
+                var upperCat =  _context.Categories.First(c => c.Id == topCategoryId);
+                _context.CommoditiesTypesInCathegories.Add(new CommodityTypeInCathegory
+                {
+                    CategoryId = upperCat.Id,
+                    CommodityTypeId = ct.Id
+                });                
+                topCategoryId = upperCat.MasterCategoryId;
+            }
+            _context.SaveChanges();
+
         }
 
         public void RemoveCommodityTypeFromCategory(ICommodityType ct, ICategory cat)
@@ -89,7 +105,7 @@ namespace GunShop.Services
 
         public void AddCategory(
             ICategory cat, 
-            IEnumerable<Characteristic> characteristics)
+            IEnumerable<Characteristic> newCharacteristics)
         {
             var newcat = new Category
             {
@@ -99,7 +115,23 @@ namespace GunShop.Services
 
             _context.Categories.Add(newcat);
             _context.SaveChanges();
-            foreach(var c in characteristics)
+
+            var characteristics = newCharacteristics.ToList();
+
+            int? topCategoryId = cat.MasterCategoryId;
+
+            while (!(topCategoryId == null))
+            {
+                characteristics.AddRange(_context.Characteristics
+                    .Where(c => c.CategoryId == topCategoryId)
+                    .ToList());
+
+                topCategoryId = _context.Categories
+                    .First(c => c.Id == topCategoryId)
+                    .MasterCategoryId;
+            }
+
+            foreach (var c in characteristics)
             {
                 AddCharacteristicToCategory(newcat, c);
             }

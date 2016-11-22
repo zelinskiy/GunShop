@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using GunShop.Data;
 using Microsoft.Extensions.Logging;
 using GunShop.ViewModels.HomeViewModels;
+using GunShop.Models;
 
 namespace GunShop.Controllers
 {
@@ -25,13 +26,78 @@ namespace GunShop.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            var model = new SearchViewModel()
+            {
+                Categories = _context.Categories.ToArray(),
+                AllCharacteristics = _context.Characteristics.ToArray(),
+                Results = _context.CommoditiesTypes.ToArray()
+            };
+            return View(model);
         }
 
         [HttpPost]
         public IActionResult Index(SearchViewModel model)
         {
-            return View();
+            var parsedSelectedCategories = new List<int>();
+            if (model.SelectedCategoriesIds != null)
+            {
+                parsedSelectedCategories = model.SelectedCategoriesIds
+                    .Split(';')
+                    .Select(id => int.Parse(id))
+                    .ToList();
+            }
+            var parsedSelectedCharVals = new List<CharacteristicValue>();
+            if (model.SelectedCharVals != null)
+            {
+                parsedSelectedCharVals = model.SelectedCharVals
+                    .Split(';')
+                    .Select(pair => new CharacteristicValue
+                    {
+                        CharacteristicId = int.Parse(pair.Split(',').First()),
+                        Value = string.Join("", pair.Split(',').Skip(1))
+                    })
+                    .ToList();                
+            }
+            
+
+            var commodityTypesIdsInSelectedCategories = _context.CommoditiesTypesInCathegories
+                .Where(ctic => parsedSelectedCategories.Contains(ctic.CategoryId))
+                .Select(ctic => ctic.CommodityTypeId)
+                .ToArray();
+
+            var commodityTypesIdsHavingCharVal = _context.CharacteristicValues
+                .Where(cv => parsedSelectedCharVals
+                    .Count(scv => scv.Value == cv.Value && scv.CharacteristicId == scv.CharacteristicId) > 0)
+                .Select(cv => cv.CommodityTypeId)
+                .ToArray();
+
+            var results = _context.CommoditiesTypes.ToList();
+            if (!string.IsNullOrEmpty(model.ModelNamePattern))
+            {
+                results = results
+                    .Where(ct => ct.Model.Contains(model.ModelNamePattern))
+                    .ToList();
+            }
+            if (parsedSelectedCategories.Count() > 0)
+            {
+                results = results
+                    .Where(ct => commodityTypesIdsInSelectedCategories.Contains(ct.Id))
+                    .ToList();
+            }
+            if (parsedSelectedCharVals.Count() > 0)
+            {
+                results = results
+                    .Where(ct => commodityTypesIdsHavingCharVal.Contains(ct.Id))
+                    .ToList();
+            }
+
+            model.Results = results;
+            model.Categories = _context.Categories.ToArray();
+            model.AllCharacteristics = _context.Characteristics
+                .Where(c => parsedSelectedCategories.Contains(c.CategoryId))
+                .ToArray();
+
+            return View(model);
         }
     }
 }

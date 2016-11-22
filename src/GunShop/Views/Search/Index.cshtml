@@ -1,4 +1,4 @@
-@model IEnumerable<GunShop.Models.CommodityType>
+@model GunShop.ViewModels.HomeViewModels.SearchViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -6,49 +6,71 @@
 }
 
 <h2>Index</h2>
+<form id="searchForm" asp-controller="Search" asp-action="Index" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="SelectedCategoriesIds" />    
+    <input type="hidden" asp-for="SelectedCharVals" />
+    <p>Model: <input asp-for="ModelNamePattern" /></p>
+    <p>Description: <input asp-for="DescriptionPattern" /></p>
+    <p><button id="submitButton" type="submit" class="btn btn-default">Search</button></p>
+</form>
+    
+    <h2><input id="checkAllCategories" type="checkbox" /> Cats:</h2>
+    <div id="AllCategories">
+        @foreach (var c in Model.Categories)
+        {
+            <p><input class="checkCategoryInput" id="checkCategory_@c.Id" type="checkbox" /> @c.Name</p>
+        }
+    </div>
+    <h2>Chars:</h2>
+    <div id="AllCategories">
+        @foreach (var c in Model.AllCharacteristics)
+        {
+            <p>
+                @c.Name
+            @foreach (var val in c.AvailableValues.Split(';'))
+            {
+                <span><input id="charval_@(c.Id)_@(val)" class="charvalRadioInput" type="radio" name="charvals_@c.Id" /> @val </span>
+            }
+        </p>
+        }
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Model
+                </th>
+                <th>
+                    Size
+                </th>
+                <th>
+                    Weight
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Results)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Model)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Size)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Weight)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ManufacturerId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Model)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Size)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Weight)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ManufacturerId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Model)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Size)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Weight)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    @section Scripts{
+        <script src="~/js/Search.js"></script>
+    }
