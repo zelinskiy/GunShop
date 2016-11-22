@@ -24,6 +24,7 @@ function sendData() {
         data: model,
         success: function (d) {
             console.log(d);
+            window.location.replace("/Commodity/AllCommodityTypes?categoryId=" + $("#CategoryId").val());
         }
     });
 }

@@ -61,7 +61,13 @@ namespace GunShop.Controllers
         {
             var model = new SelectCategoryToAddViewModel();
             model.CommodityTypeId = commodityid;
-            model.Categories = _context.Categories.ToArray();
+            var oldCategories = _context.CommoditiesTypesInCathegories
+                .Where(ctic => ctic.CommodityTypeId == commodityid)
+                .Select(ctic => ctic.CategoryId)
+                .ToArray();
+            model.Categories = _context.Categories
+                .Where(c=>!oldCategories.Contains(c.Id))
+                .ToArray();
             return View(model);
         }
 

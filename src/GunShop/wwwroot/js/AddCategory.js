@@ -25,7 +25,7 @@ function sendData() {
         url: "/Category/AddCategory",
         data: getData(),
         success: function (d) {
-            console.log(d);
+            window.location.replace("/Commodity/AllCommodityTypes");
         }
     });
 }
