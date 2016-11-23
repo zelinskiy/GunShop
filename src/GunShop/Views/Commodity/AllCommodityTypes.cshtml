@@ -57,7 +57,7 @@
             <td>
                 @if (ct.AvailableCount > 0)
                 {
-                    <form asp-controller="Home" asp-action="AddCommodityToChart" method="post" asp-route-commodityTypeId="@ct.Id">
+                    <form asp-controller="Chart" asp-action="AddCommodityToChart" method="post" asp-route-commodityTypeId="@ct.Id">
                         <button type="submit" class="btn btn-link">Add to chart</button>
                     </form>
                 }

@@ -1,48 +1,128 @@
-@model IEnumerable<GunShop.Models.Storage>
+@model GunShop.ViewModels.LocationViewModels.IndexViewModel
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<form asp-action="Index">
+    <div class="form-horizontal">
+        <h4>Add</h4>
+        <hr />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Adress" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Adress" class="form-control" />
+                <span asp-validation-for="Adress" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Coordinates" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Coordinates" class="form-control" />
+                <span asp-validation-for="Coordinates" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="IsShop" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="IsShop" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="submitButton" type="submit" value="Add" class="btn btn-default" />
+            </div>
+        </div>      
+    </div>
+</form>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+<h2>Shops</h2>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Adress)
+                Adress
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Coordinates)
+                Coordinates
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Name
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var shop in Model.Shops) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Adress)
+                @shop.Adress
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Coordinates)
+                @shop.Coordinates
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @shop.Name
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="DeleteShop" asp-route-shopId="@shop.Id">Delete</a>
             </td>
         </tr>
 }
+    </tbody>
+</table>
+
+<h2>Storages</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Adress
+            </th>
+            <th>
+                Coordinates
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Stored
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var storage in Model.Storages)
+        {
+            <tr>
+                <td>
+                    @storage.Adress
+                </td>
+                <td>
+                    @storage.Coordinates
+                </td>
+                <td>
+                    @storage.Name
+                </td>
+                <td>
+                    @storage.StoredCommodities.Count()
+                </td>
+                <td>
+                    <a asp-action="DeleteStorage" asp-route-storageId="@storage.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

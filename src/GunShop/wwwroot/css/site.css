@@ -42,3 +42,7 @@ textarea {
     display: none
   }
 }
+
+.ng-invalid-pattern{
+    background-color:red;
+}

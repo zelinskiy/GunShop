@@ -15,7 +15,7 @@
         <span>
             <input ng-model="char.name" type="text" />
             <label>Possvals:</label>
-            <input ng-model="char.possvals" type="text" />
+            <input pattern="^[1-9a-zA-Z;]{0,}$" ng-model="char.possvals" type="text" />
         </span>
     </div> 
     <label>Characteristic N:</label>
