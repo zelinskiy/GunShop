@@ -30,6 +30,9 @@
                 Weight
             </th>
             <th>
+                Other chars
+            </th>
+            <th>
                 Available
             </th>
             <th></th>
@@ -43,13 +46,19 @@
                 @ct.ManufacturerPreview.Preview
             </td>
             <td>
-                @ct.Model
+                <a asp-action ="Details" asp-route-commodityTypeId="@ct.Id">@ct.Model</a>
             </td>
             <td>
                 @ct.Size
             </td>
             <td>
                 @ct.Weight
+            </td>
+            <td>
+                @foreach(var c in ct.CharacteristicPreviews)
+                {
+                    <span>@c.CharacteristicName:@c.Value </span>
+                }
             </td>
             <td>
                 @ct.AvailableCount

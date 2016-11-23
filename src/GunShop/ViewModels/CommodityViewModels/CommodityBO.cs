@@ -6,38 +6,41 @@ using System.Threading.Tasks;
 
 namespace GunShop.ViewModels.CommodityViewModels
 {
-    public class CommodityTypeBO:CommodityType
+    public class CommodityBO:Commodity
     {
+        public string Model { get; set; }
+        public string Size { get; set; }
+        public int Weight { get; set; }
+        public int ManufacturerId { get; set; }
+
         public string ManufacturerName { get; set; }
         public string ManufacturerCountry { get; set; }
-        public ManufacturerPreview ManufacturerPreview { get; set; }
 
-        public int AvailableCount { get; set; }
-        
-        public CommodityTypeBO(CommodityType t)
+        public CommodityBO(Commodity c)
         {
-            this.Id = t.Id;
+            this.Id = c.Id;
+            this.CommodityTypeId = c.CommodityTypeId;
+            this.OrderId = c.OrderId;
+        }
+
+        public CommodityBO AddType(CommodityType t)
+        {
             this.Model = t.Model;
             this.Size = t.Size;
             this.Weight = t.Weight;
-            this.ManufacturerId = t.ManufacturerId;            
+            this.ManufacturerId = t.ManufacturerId;
+
+            return this;
         }
 
-        public CommodityTypeBO AddManufacturer(Manufacturer m)
+        public CommodityBO AddManufacturer(Manufacturer m)
         {
             this.ManufacturerCountry = m.Country;
             this.ManufacturerId = m.Id;
             this.ManufacturerName = m.Name;
-            this.ManufacturerPreview = new ManufacturerPreview(m);
 
             return this;
         }
-
-        public CommodityTypeBO AddAvailableCount(int n)
-        {
-            this.AvailableCount = n;
-
-            return this;
-        }
+        
     }
 }

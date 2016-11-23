@@ -65,6 +65,20 @@ namespace GunShop.Services
 
         public IEnumerable<CommodityTypeBO> GetAllCommoditiesTypes()
         {
+
+            var allCharacteristicsPreviews = _context.CharacteristicValues.Join(
+                    _context.Characteristics,
+                    cv => cv.CharacteristicId,
+                    ch => ch.Id,
+                    (cv, ch) => new CharacteristicPreview()
+                    {
+                        CharacteristicId = ch.Id,
+                        CharacteristicName = ch.Name,
+                        Value = cv.Value,
+                        CommodityTypeId = cv.CommodityTypeId
+                    })
+                .ToArray();
+
             return _context.CommoditiesTypes.Join(
                 _context.Manufacturers,
                 ct => ct.ManufacturerId,
@@ -72,8 +86,13 @@ namespace GunShop.Services
                 (ct, m) => new CommodityTypeBO(ct)
                     .AddManufacturer(m)
                     .AddAvailableCount(_context.Commodities
-                        .Where(c=>!_context.CommoditiesInCharts.Select(cic=>cic.CommodityId).Contains(c.Id))
+                        .Where(c=>!_context.CommoditiesInCharts
+                            .Select(cic=>cic.CommodityId)
+                            .Contains(c.Id))
                         .Count(c => c.CommodityTypeId == ct.Id))
+                    .AddCharacteristics(allCharacteristicsPreviews
+                        .Where(cp => cp.CommodityTypeId == ct.Id)
+                        .ToArray())
                 )
             .ToArray();
         }

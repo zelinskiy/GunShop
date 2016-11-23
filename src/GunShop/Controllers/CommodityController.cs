@@ -109,5 +109,22 @@ namespace GunShop.Controllers
 
             return View(model);
         }
+
+
+        [HttpGet]
+        public IActionResult Details(int commodityTypeId)
+        {
+            var commodityTypeBO = _commoditiesService
+                .GetAllCommoditiesTypes()
+                .FirstOrDefault(ctbo => ctbo.Id == commodityTypeId);
+
+            if(commodityTypeBO == null)
+            {
+                return NotFound($"commodity type {commodityTypeId} not found");
+            }
+
+            return View(commodityTypeBO);
+        }
+
     }
 }

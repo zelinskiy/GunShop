@@ -1,0 +1,61 @@
+@model GunShop.ViewModels.CommodityViewModels.CommodityTypeBO
+
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View</h2>
+
+<div>
+    <h4>Item @Model.Model</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Model)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Model)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Size)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Weight)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Weight)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ManufacturerCountry)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ManufacturerCountry)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ManufacturerName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ManufacturerName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AvailableCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AvailableCount)
+        </dd>
+        @foreach (var ch in Model.CharacteristicPreviews)
+        {
+            <dt>
+                @ch.CharacteristicName
+            </dt>
+            <dd>
+                @ch.Value
+            </dd>
+        }
+
+    </dl>
+</div>
