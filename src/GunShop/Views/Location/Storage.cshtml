@@ -4,10 +4,36 @@
     ViewData["Title"] = "Storage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<br />
+<p><a asp-action="Index" >return</a></p>
 
-<h2>Storage @Model.StorageBO.Name (#@Model.StorageBO.Id)</h2>
-<p>Stored: @Model.StorageBO.StoredCommodities.Count()</p>
-<input type="hidden" id="storageAId" asp-for="@Model.StorageBO.Id" />
+<h2>Storage @Model.Name (#@Model.Id)</h2>
+<p>Stored: @Model.Commodities.Count()</p>
+
+<form id="moveForm" asp-action="Storage">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Storage A</label>
+            <div class="col-md-10">
+                <input asp-for="Id" disabled autocomplete="off" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Storage B</label>
+            <div class="col-md-10">
+                @Html.DropDownList("StorageBId", new SelectList(Model.StorageBCandidates, "Id", "Name"), new { @class = "form-control" })
+                <span asp-validation-for="StorageBId" class="text-danger" />
+            </div>
+        </div>        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" id="submitButton" value="Move" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
 
 <table class="table">
     <thead>
@@ -25,12 +51,12 @@
                 Order
             </th>
             <th>
-                Add to Shipping
+                Add to Shipping <input type="checkbox" id="selectAllCommodities"/>
             </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.StorageBO.StoredCommodities.OrderBy(i=>i.CommodityTypeId)) {
+@foreach (var item in Model.Commodities.OrderBy(i=>i.CommodityTypeId)) {
         <tr>
             <td>
                 @item.Id
@@ -51,3 +77,7 @@
 }
     </tbody>
 </table>
+
+@section Scripts{
+    <script src="/js/Storage.js"></script>
+}

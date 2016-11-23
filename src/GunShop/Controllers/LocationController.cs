@@ -100,39 +100,89 @@ namespace GunShop.Controllers
             }
             var model = new StorageViewModel()
             {
-                StorageBO = new StorageBO(storage, GetCommoditiesInStorage(storage.Id))
+                Id = storageId,
+                Adress = storage.Adress,
+                Coordinates = storage.Coordinates,
+                Name = storage.Name,
+                Commodities = GetCommoditiesInStorage(storageId),
+                StorageBCandidates = _context.Storages
+                    .Where(s=>s.Id != storageId)
+                    .ToArray()
             };
             return View(model);
         }
         
-        [HttpGet]
-        public IActionResult AddShipping(IEnumerable<int> commoditiesIds, int storageAId)
+        [HttpPost]
+        public IActionResult Storage(StorageViewModel model)
         {
-            if(commoditiesIds == null || commoditiesIds.Count() == 0)
-            {
-                return NotFound("Empty ids list");
-            }
-
-            var commodities = _commoditiesService.GetAllCommodities()
-                .Where(c => commoditiesIds.Contains(c.Id))
+            var selectedCommoditiesIds = model.SelectedCommoditiesIds
+                .Split(';')
+                .Select(id => int.Parse(id))
                 .ToArray();
 
-            var storageA = _context.Storages.FirstOrDefault(s => s.Id == storageAId);
+            var commodities = _context.Commodities
+                .Where(c => selectedCommoditiesIds.Contains(c.Id))
+                .ToArray();
+                      
+            var storageA = _context.Storages.FirstOrDefault(s => s.Id == model.Id);
             if(storageA == null)
             {
-                return NotFound($"Storage {storageAId} not found");
+                return Content($"Storage A {model.Id} not found");
             }
 
-            var model = new ShippingViewModel()
+            var storageB = _context.Storages.FirstOrDefault(s => s.Id == model.StorageBId);
+            if (storageB == null)
             {
-                Commodities = commodities,
-                StorageAId = storageAId,
-                StorageA = storageA,
-                StorageBCandidates = _context.Storages
-                    .Where(s => s.Id != storageAId).ToArray()
-            };
+                return Content($"Storage B {model.StorageBId} not found");
+            }
 
-            return View(model);
+            var newShipping = new Shipping()
+            {
+                AuthorId = "me",
+                StorageAId = storageA.Id,
+                StorageBId = storageB.Id,
+                Date = DateTime.Now
+            };
+            _context.Shippings.Add(newShipping);
+            _context.SaveChanges();
+
+            foreach (var c in commodities)
+            {
+                c.StorageId = storageB.Id;
+                _context.ShippingRows.Add(new ShippingRow() { CommodityId = c.Id, ShippingId = newShipping.Id });
+            }
+            _context.UpdateRange(commodities);
+            _context.SaveChanges();
+
+            return Content(model.StorageBId.ToString());
+
+        }
+
+        public IActionResult AllShippings()
+        {
+            var shippings = _context.Shippings.Select(s => new ShippingViewModel()
+            {
+                ShippingId = s.Id,
+                AuthorId = s.AuthorId,
+                Date = s.Date,
+                StorageA = _context.Storages.First(st => st.Id == s.StorageAId),
+                StorageB = _context.Storages.First(st => st.Id == s.StorageBId)
+            }).ToArray();
+
+            foreach(var s in shippings)
+            {
+                //s.StorageA = _context.Storages.First(st => st.Id == s.StorageAId);
+                //s.StorageB = _context.Storages.First(st => st.Id == s.StorageBId);
+                var commoditiesInShipping = _context.ShippingRows
+                    .Where(sr => sr.ShippingId == s.ShippingId)
+                    .Select(sr => sr.CommodityId)
+                    .ToArray();
+
+                s.Commodities = _commoditiesService.GetAllCommodities()
+                    .Where(c => commoditiesInShipping.Contains(c.Id));
+            }
+
+            return View(shippings);
 
         }
 

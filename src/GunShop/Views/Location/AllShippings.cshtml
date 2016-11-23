@@ -1,0 +1,66 @@
+@model IEnumerable<GunShop.ViewModels.LocationViewModels.ShippingViewModel>
+
+@{
+    ViewData["Title"] = "All Shippings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>AllShippings</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Author
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Storage A
+            </th>
+            <th>
+                Storage B
+            </th>
+            <th>
+                Amount
+            </th>
+            <th width="50%">
+                Items
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.AuthorId
+            </td>
+            <td>
+                @item.Date
+            </td>
+            <td>
+                @item.StorageA.Name (#@item.StorageA.Id)
+            </td>
+            <td>
+                @item.StorageB.Name (#@item.StorageB.Id)
+            </td>
+            <td>
+                @item.Commodities.Count()                
+            </td>
+            <td>
+                <button data-toggle="collapse" class="btn btn-default" data-target="#itemsList_@item.ShippingId">Show</button>
+                <br />
+                <div id="itemsList_@item.ShippingId" class="collapse">
+                    @foreach (var comm in item.Commodities)
+                    {
+                        <p>[#@(comm.Id)] @(comm.Model)(@(comm.ManufacturerName),@(comm.ManufacturerCountry)) Order:@(comm.OrderId??-1)</p>
+                    }
+                </div>
+                
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
