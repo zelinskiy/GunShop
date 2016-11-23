@@ -13,6 +13,16 @@ namespace GunShop.ViewModels.CommodityViewModels
         public string CharacteristicName { get; set; }
         public string Value { get; set; }
         public int CommodityTypeId { get; set; }
+        public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
+
+        public CharacteristicPreview AddCategory(Category cat)
+        {
+            CategoryId = cat.Id;
+            CategoryName = cat.Name;
+            return this;
+                            
+        }
     }
 
     public class CommodityTypeBO:CommodityType
@@ -21,6 +31,7 @@ namespace GunShop.ViewModels.CommodityViewModels
         public string ManufacturerCountry { get; set; }
         public ManufacturerPreview ManufacturerPreview { get; set; }
         public IEnumerable<CharacteristicPreview> CharacteristicPreviews { get; set; }
+        public IEnumerable<Category> Categories { get; set; }
 
         public int AvailableCount { get; set; }
         

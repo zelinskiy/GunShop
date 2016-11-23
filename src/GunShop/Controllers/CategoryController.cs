@@ -83,8 +83,15 @@ namespace GunShop.Controllers
             model.CategoryId = cat.Id;
             model.CategoryName = cat.Name;
             model.CommodityTypeModel = ct.Model;
+            var settedCharacteristicsIds = _context.CharacteristicValues
+                .Where(cv => cv.CommodityTypeId == ct.Id)
+                .Select(cv => cv.CharacteristicId)
+                .ToArray();
+
             model.Characteristics = _context.Characteristics
-                .Where(c => c.CategoryId == cat.Id).ToArray();
+                .Where(c => c.CategoryId == cat.Id)
+                .Where(c => !settedCharacteristicsIds.Contains(c.Id))
+                .ToArray();
 
             return View(model);
         }

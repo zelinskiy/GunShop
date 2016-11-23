@@ -21,7 +21,7 @@
                 @c.Model
             </td>
             <td>
-                <form asp-controller="Home" asp-action="RemoveCommodityFromChart" method="post" asp-route-commodityId="@c.Id">
+                <form asp-controller="Chart" asp-action="RemoveCommodityFromChart" method="post" asp-route-commodityId="@c.Id">
                     <button type="submit" class="btn btn-link">Remove from chart</button>
                 </form>
             </td>

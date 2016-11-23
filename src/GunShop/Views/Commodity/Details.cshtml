@@ -47,15 +47,20 @@
         <dd>
             @Html.DisplayFor(model => model.AvailableCount)
         </dd>
-        @foreach (var ch in Model.CharacteristicPreviews)
+        @foreach(var group in Model.CharacteristicPreviews.GroupBy(ch => ch.CategoryId))
         {
-            <dt>
-                @ch.CharacteristicName
-            </dt>
-            <dd>
-                @ch.Value
-            </dd>
+            <h3>@group.First().CategoryName</h3>
+            @foreach (var ch in group)
+            {
+                <dt>
+                    @ch.CharacteristicName
+                </dt>
+                <dd>
+                    @ch.Value
+                </dd>
+            }
         }
+       
 
     </dl>
 </div>

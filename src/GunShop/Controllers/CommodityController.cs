@@ -125,6 +125,14 @@ namespace GunShop.Controllers
             {
                 return NotFound($"commodity type {commodityTypeId} not found");
             }
+            commodityTypeBO.Categories = _context.CommoditiesTypesInCathegories
+                .Where(ctic => ctic.CommodityTypeId == commodityTypeId)
+                .Join(
+                    _context.Categories,
+                    ctic => ctic.CategoryId,
+                    cat => cat.Id,
+                    (ctic, cat) => cat
+                ).ToArray();
 
             return View(commodityTypeBO);
         }

@@ -78,8 +78,15 @@ namespace GunShop.Services
                         CharacteristicId = ch.Id,
                         CharacteristicName = ch.Name,
                         Value = cv.Value,
-                        CommodityTypeId = cv.CommodityTypeId
+                        CommodityTypeId = cv.CommodityTypeId,
+                        CategoryId = ch.CategoryId
                     })
+                .Join(
+                    _context.Categories,
+                    preview => preview.CategoryId,
+                    cat => cat.Id,
+                    (preview, cat) => preview.AddCategory(cat)
+                )
                 .ToArray();
 
             return _context.CommoditiesTypes.Join(
