@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GunShop.Models;
 
-namespace GunShop.ViewModels.HomeViewModels
+namespace GunShop.ViewModels.CommodityViewModels
 {
     public class AllCommodityTypesViewModel
     {

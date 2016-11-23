@@ -1,4 +1,5 @@
 ﻿using GunShop.Models;
+using GunShop.ViewModels.CommodityViewModels;
 using System;
 using System.Collections.Generic;
 

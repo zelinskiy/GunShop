@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace GunShop.ViewModels.HomeViewModels
+namespace GunShop.ViewModels.CommodityViewModels
 {
 
     public class ManufacturerPreview

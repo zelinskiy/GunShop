@@ -1,6 +1,6 @@
 ﻿using GunShop.Models;
 using GunShop.Models.Interfaces;
-using GunShop.ViewModels.HomeViewModels;
+using GunShop.ViewModels.CommodityViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

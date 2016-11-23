@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using GunShop.Data;
 using GunShop.Services;
 using GunShop.Services.Interfaces;
-using GunShop.ViewModels.HomeViewModels;
+using GunShop.ViewModels.CommodityViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 

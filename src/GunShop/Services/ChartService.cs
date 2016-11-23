@@ -1,7 +1,7 @@
 ﻿using GunShop.Data;
 using GunShop.Models;
 using GunShop.Services.Interfaces;
-using GunShop.ViewModels.HomeViewModels;
+using GunShop.ViewModels.CommodityViewModels;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GunShop.Models.Interfaces;
 
-namespace GunShop.ViewModels.HomeViewModels
+namespace GunShop.ViewModels.CommodityViewModels
 {
     public class ManufacturerViewModel : IManufacturer
     {

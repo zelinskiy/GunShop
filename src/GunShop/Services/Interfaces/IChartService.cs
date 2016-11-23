@@ -1,5 +1,5 @@
 ﻿using GunShop.Models;
-using GunShop.ViewModels.HomeViewModels;
+using GunShop.ViewModels.CommodityViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

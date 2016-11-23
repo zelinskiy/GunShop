@@ -6,7 +6,7 @@ using GunShop.Data;
 using GunShop.Models;
 using GunShop.Services;
 using GunShop.Services.Interfaces;
-using GunShop.ViewModels.HomeViewModels;
+using GunShop.ViewModels.CategoryViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
