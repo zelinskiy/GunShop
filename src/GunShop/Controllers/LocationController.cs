@@ -29,6 +29,7 @@ namespace GunShop.Controllers
             _commoditiesService = commoditiesService;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             var model = new IndexViewModel()
@@ -89,6 +90,52 @@ namespace GunShop.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public IActionResult Storage(int storageId)
+        {
+            var storage = _context.Storages.FirstOrDefault(s => s.Id == storageId);
+            if(storage == null)
+            {
+                return NotFound($"Storage {storageId} not found!");
+            }
+            var model = new StorageViewModel()
+            {
+                StorageBO = new StorageBO(storage, GetCommoditiesInStorage(storage.Id))
+            };
+            return View(model);
+        }
+        
+        [HttpGet]
+        public IActionResult AddShipping(IEnumerable<int> commoditiesIds, int storageAId)
+        {
+            if(commoditiesIds == null || commoditiesIds.Count() == 0)
+            {
+                return NotFound("Empty ids list");
+            }
+
+            var commodities = _commoditiesService.GetAllCommodities()
+                .Where(c => commoditiesIds.Contains(c.Id))
+                .ToArray();
+
+            var storageA = _context.Storages.FirstOrDefault(s => s.Id == storageAId);
+            if(storageA == null)
+            {
+                return NotFound($"Storage {storageAId} not found");
+            }
+
+            var model = new ShippingViewModel()
+            {
+                Commodities = commodities,
+                StorageAId = storageAId,
+                StorageA = storageA,
+                StorageBCandidates = _context.Storages
+                    .Where(s => s.Id != storageAId).ToArray()
+            };
+
+            return View(model);
+
+        }
+
         public IActionResult DeleteShop(int shopId)
         {
             var shop = _context.Shops.FirstOrDefault(s => s.Id == shopId);
@@ -122,13 +169,8 @@ namespace GunShop.Controllers
 
         private IEnumerable<CommodityBO> GetCommoditiesInStorage(int storageId)
         {
-            var commoditiesIds = _context.CommoditiesInStorages
-                .Where(cis => cis.StorageId == storageId)
-                .Select(cis => cis.CommodityId)
-                .ToArray();
-
             return _commoditiesService.GetAllCommodities()
-                .Where(c => commoditiesIds.Contains(c.Id))
+                .Where(c => c.StorageId == storageId)
                 .ToArray();
 
         }

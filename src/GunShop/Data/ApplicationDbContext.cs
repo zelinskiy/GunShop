@@ -26,7 +26,6 @@ namespace GunShop.Data
 
         public DbSet<Storage> Storages { get; set; }
         public DbSet<Shop> Shops { get; set; }
-        public DbSet<CommodityInStorage> CommoditiesInStorages { get; set; }
 
         public DbSet<Shipping> Shippings { get; set; }
         public DbSet<ShippingRow> ShippingRows { get; set; }
@@ -45,8 +44,6 @@ namespace GunShop.Data
                 .HasKey(cic => new { cic.CommodityTypeId, CathegoryId = cic.CategoryId });
             builder.Entity<CharacteristicValue>()
                 .HasKey(cv => new { cv.CommodityTypeId, cv.CharacteristicId });
-            builder.Entity<CommodityInStorage>()
-                .HasKey(cis => new { cis.CommodityId, cis.StorageId });
             builder.Entity<ShippingRow>()
                 .HasKey(sr => new { sr.CommodityId, sr.ShippingId });
         }

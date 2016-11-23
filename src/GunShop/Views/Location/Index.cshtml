@@ -114,7 +114,7 @@
                     @storage.Coordinates
                 </td>
                 <td>
-                    @storage.Name
+                    <a asp-action="Storage" asp-route-storageId="@storage.Id">@storage.Name</a>
                 </td>
                 <td>
                     @storage.StoredCommodities.Count()

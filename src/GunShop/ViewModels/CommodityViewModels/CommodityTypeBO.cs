@@ -30,7 +30,7 @@ namespace GunShop.ViewModels.CommodityViewModels
             this.Model = t.Model;
             this.Size = t.Size;
             this.Weight = t.Weight;
-            this.ManufacturerId = t.ManufacturerId;            
+            this.ManufacturerId = t.ManufacturerId;
         }
 
         public CommodityTypeBO AddManufacturer(Manufacturer m)

@@ -41,7 +41,10 @@ namespace GunShop.Services
             if (commodityTypeViewModel == null) return;
             for (int i = 0; i < commodityTypeViewModel.InitialCount; i++)
             {
-                _context.Commodities.Add(new Commodity { CommodityTypeId = newtype.Entity.Id });
+                _context.Commodities.Add(new Commodity {
+                    CommodityTypeId = newtype.Entity.Id,
+                    StorageId = commodityTypeViewModel.StorageId
+                });
             }
             await _context.SaveChangesAsync();
         }

@@ -21,6 +21,7 @@ namespace GunShop.ViewModels.CommodityViewModels
             this.Id = c.Id;
             this.CommodityTypeId = c.CommodityTypeId;
             this.OrderId = c.OrderId;
+            this.StorageId = c.StorageId;
         }
 
         public CommodityBO AddType(CommodityType t)

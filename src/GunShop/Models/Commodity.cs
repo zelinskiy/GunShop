@@ -9,6 +9,7 @@ namespace GunShop.Models
     {
         public int Id { get; set; }
         public int? OrderId { get; set; }
-        public int CommodityTypeId { get; set; }        
+        public int CommodityTypeId { get; set; }
+        public int StorageId { get; set; }      
     }
 }

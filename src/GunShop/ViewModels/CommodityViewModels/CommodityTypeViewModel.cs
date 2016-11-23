@@ -25,12 +25,27 @@ namespace GunShop.ViewModels.CommodityViewModels
         }
     }
 
+    public class StoragePreview
+    {
+        public int Id { get; set; }
+        public string Preview { get; set; }
+
+        public StoragePreview() { }
+
+        public StoragePreview(Storage s)
+        {
+            Id = s.Id;
+            Preview = $"{s.Name}({s.Id})";
+        }
+    }
+
     public class CommodityTypeViewModel : ICommodityType
     {
         public int Id { get; set; }
 
         public IEnumerable<string> ModelsPreviews { get; set; }
         public IEnumerable<ManufacturerPreview> ManufacturersPreviews { get; set; }
+        public IEnumerable<StoragePreview> StoragesPreviews { get; set; }
 
         [Range(0, 1000000000, ErrorMessage ="Incorrect Value")]
         public int InitialCount { get; set; }
@@ -46,6 +61,9 @@ namespace GunShop.ViewModels.CommodityViewModels
 
         [Required(ErrorMessage = "Can't be empty")]
         public int ManufacturerId { get; set; }
+
+        [Required(ErrorMessage = "Can't be empty")]
+        public int StorageId { get; set; }
 
     }
 }

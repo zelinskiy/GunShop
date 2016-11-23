@@ -40,9 +40,12 @@ namespace GunShop.Controllers
             {
                 ManufacturersPreviews = _context
                     .Manufacturers
-                    .ToList()
-                    .Select(m => new ManufacturerPreview(m))
-                    .ToArray(),
+                    .ToArray()
+                    .Select(m => new ManufacturerPreview(m)),
+                StoragesPreviews = _context
+                    .Storages
+                    .ToArray()
+                    .Select(s => new StoragePreview(s)),
                 ModelsPreviews = _context.CommoditiesTypes.Select(ct => ct.Model).ToArray()
             };
             return View(model);

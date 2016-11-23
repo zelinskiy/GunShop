@@ -1,0 +1,53 @@
+@model GunShop.ViewModels.LocationViewModels.StorageViewModel
+
+@{
+    ViewData["Title"] = "Storage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Storage @Model.StorageBO.Name (#@Model.StorageBO.Id)</h2>
+<p>Stored: @Model.StorageBO.StoredCommodities.Count()</p>
+<input type="hidden" id="storageAId" asp-for="@Model.StorageBO.Id" />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Model
+            </th>
+            <th>
+                Manufacturer
+            </th>
+            <th>
+                Order
+            </th>
+            <th>
+                Add to Shipping
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.StorageBO.StoredCommodities.OrderBy(i=>i.CommodityTypeId)) {
+        <tr>
+            <td>
+                @item.Id
+            </td>
+            <td>
+                @item.Model
+            </td>
+            <td>
+                @item.ManufacturerName
+            </td>
+            <td>
+                @item.StorageId
+            </td>
+            <td>
+                <input type="checkbox" id="selectedCommodity_@item.Id" class="selectedCommodityCheckbox" />
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
