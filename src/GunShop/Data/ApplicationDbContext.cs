@@ -21,10 +21,12 @@ namespace GunShop.Data
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Characteristic> Characteristics { get; set; }
-
         public DbSet<CharacteristicValue> CharacteristicValues { get; set; }
         public DbSet<CommodityTypeInCathegory> CommoditiesTypesInCathegories { get; set; }
 
+        public DbSet<Storage> Storages { get; set; }
+        public DbSet<Shop> Shops { get; set; }
+        public DbSet<CommodityInStorage> CommoditiesInStorages { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -40,6 +42,10 @@ namespace GunShop.Data
                 .HasKey(cic => new { cic.CommodityTypeId, CathegoryId = cic.CategoryId });
             builder.Entity<CharacteristicValue>()
                 .HasKey(cv => new { cv.CommodityTypeId, cv.CharacteristicId });
+            builder.Entity<CommodityInStorage>()
+                .HasKey(cis => new { cis.CommodityId, cis.StorageId });
         }
+
+        public DbSet<Storage> Storage { get; set; }
     }
 }
