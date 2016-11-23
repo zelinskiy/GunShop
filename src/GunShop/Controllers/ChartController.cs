@@ -90,5 +90,9 @@ namespace GunShop.Controllers
             _chartService.ClearAllAnonymousCharts();
             return RedirectToAction("Index", "Home");
         }
+
+        
+
+
     }
 }
