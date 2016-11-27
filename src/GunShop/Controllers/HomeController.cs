@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
 using GunShop.Services;
 using System.Collections.Generic;
+using GunShop.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace GunShop.Controllers
 {
@@ -56,6 +58,55 @@ namespace GunShop.Controllers
             );
 
             return LocalRedirect(returnUrl);
+        }
+
+        [HttpGet]
+        public IActionResult ExecuteSql()
+        {
+            ViewData["result"] = "";
+            return View();
+
+        }
+
+
+        [HttpPost]
+        public IActionResult ExecuteSql(string query)
+        {
+            var forbiddenWords = new string[]
+            {
+                " UPDATE ",
+                " DROP ",
+                " ALTER "
+            };
+
+            ViewData["query"] = query;
+            foreach (var word in forbiddenWords)
+            {
+                if (query.ToUpper().Contains(word))
+                {
+                    ViewData["error"] = "Word " + word + " is forbidden";
+                    return View();
+                }
+            }
+            
+
+            var connectionString = _context.Database.GetDbConnection().ConnectionString;
+
+            var maker = new SqlMaker(connectionString);
+            var result = "";
+            if (maker.TryExecuteQuery(query, ref result))
+            {
+                ViewData["error"] = null;
+            }
+            else
+            {
+                ViewData["error"] = result;
+                return View();
+            }
+
+            ViewData["result"] = result;
+
+            return View();
         }
 
         public IActionResult Error()
