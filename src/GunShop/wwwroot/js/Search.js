@@ -45,3 +45,18 @@ $("#checkAllCategories").change(function () {
         this.checked = _checked;
     })
 })
+
+
+var table = $('#searchResults').DataTable({
+    searching: false,
+    paging: false,
+    info: false,
+    columns: [
+        { orderable: true },
+        { orderable: true },
+        { orderable: true },
+        { orderable: false },
+    ]
+});
+
+

@@ -5,17 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<table class="table">
+<table class="table" id="allCommoditiesTable">
     <thead>
-        <tr>
-            <th>
-                Model
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            Model
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var c in Model) {
+    @foreach (var c in Model.OrderBy(cbo => cbo.Model)) {
         <tr>
             <td>
                 @c.Model
@@ -24,8 +24,14 @@
                 <form asp-controller="Chart" asp-action="RemoveCommodityFromChart" method="post" asp-route-commodityId="@c.Id">
                     <button type="submit" class="btn btn-link">Remove from chart</button>
                 </form>
+                <a class="btn btn-link" asp-controller="Commodity" asp-action="Details" asp-route-commodityTypeId="@c.CommodityTypeId">Details</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
+
+
+@section Scripts{
+    <script src="/js/Chart.js"></script>
+}
