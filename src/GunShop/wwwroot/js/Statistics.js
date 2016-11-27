@@ -4,7 +4,9 @@ function loadChartsStatistic() {
 
     $.get({
         url: "/Statistics/ChartSizes",
-        success: fillChartsStatistics
+        success: function (data) {
+            createPieChart("chartsChart", data, e => "Customer " + e.CustomerId, e => e.Count);
+        }
     });
     
 }
@@ -13,18 +15,30 @@ function loadStoragesStatistic() {
 
     $.get({
         url: "/Statistics/StoragesFilled",
-        success: fillStoragesStatistics
+        success: function(data) {
+            createPieChart("storagesChart", data, e => "Storage " + e.StorageId, e => e.Count);
+        }
+    });
+
+}
+
+function loadManufacturersStatistic() {
+
+    $.get({
+        url: "/Statistics/ManufacturersFilled",
+        success: function (data) {
+            createPieChart("manufacturersChart", data, e => "Manufacturer " + e.ManufacturerId, e => e.Count);
+        }
     });
 
 }
 
 
-function fillChartsStatistics(data) {
-    console.log(data);
-    var labels = data.map(e => "Customer " + e.CustomerId);
-    var counts = data.map(e => e.Count);
-    var ctx = document.getElementById("myChart");
-    var myChart = new Chart(ctx, {
+function createPieChart(elementId, data, labelsSelector, dataSelector) {
+    var labels = data.map(labelsSelector);
+    var counts = data.map(dataSelector);
+    var ctx = document.getElementById(elementId);
+    return new Chart(ctx, {
         type: 'pie',
         data: {
             labels: labels,
@@ -39,29 +53,6 @@ function fillChartsStatistics(data) {
         }
     });
 }
-
-
-function fillStoragesStatistics(data) {
-    console.log(data);
-    var labels = data.map(e => "Storage " + e.StorageId);
-    var counts = data.map(e => e.Count);
-    var ctx = document.getElementById("myChart2");
-    var myChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: labels,
-            datasets: [{
-                data: counts,
-                backgroundColor: labels.map(e => getRandomColor())
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-        }
-    });
-}
-
 
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
@@ -75,6 +66,7 @@ function getRandomColor() {
 (function () {
     loadChartsStatistic();
     loadStoragesStatistic();
+    loadManufacturersStatistic();
 
 })();
 
