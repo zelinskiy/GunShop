@@ -21,6 +21,8 @@ namespace GunShop.Controllers
         ICommoditiesService _commoditiesService;
         private readonly IHostingEnvironment _appEnvironment;
 
+        private readonly string _tempPath;
+
         public ReportsController(
             ApplicationDbContext context,
             IHostingEnvironment appEnvironment,
@@ -31,15 +33,21 @@ namespace GunShop.Controllers
             _logger = loggerFactory.CreateLogger<ReportsController>();
             _commoditiesService = commoditiesService;
             _appEnvironment = appEnvironment;
+            _tempPath = Path.Combine(_appEnvironment.WebRootPath, "temp");
         }
 
-        public IActionResult ShippmentReportPdf(int id)
+        public IActionResult ShippmentReport(int id, string type = "pdf")
         {
             var shipping = _context.Shippings.FirstOrDefault(s => s.Id == id);
 
             if (shipping == null)
             {
                 return Content("Not Found");
+            }
+
+            if (type != "pdf" && type != "tex")
+            {
+                return BadRequest("incorrect type");
             }
 
             var commoditiesInShipping = _context.ShippingRows
@@ -57,13 +65,40 @@ namespace GunShop.Controllers
                 Commodities = _commoditiesService.GetAllCommodities()
                     .Where(c => commoditiesInShipping.Contains(c.Id))
             };
+            
 
-            var tempPath = Path.Combine(_appEnvironment.WebRootPath, "temp");
+            var maker = new ReportMaker(_tempPath);
 
-            var maker = new ReportMaker(tempPath);
+            var res = maker.MakeShipping(model).Split('\\', '/').Last();
 
-            return Content(maker.MakeShipping(model));
+            return Redirect("~/temp/" + res + "." + type);
 
+        }
+
+        public IActionResult StorageInventoryReport(int id, string type = "pdf")
+        {
+            var storage = _context.Storages.FirstOrDefault(s => s.Id == id);
+
+            if (storage == null)
+            {
+                return Content("Not Found");
+            }
+
+            if (type != "pdf" && type != "tex")
+            {
+                return BadRequest("incorrect type");
+            }
+
+            var storedCommodities = _commoditiesService.GetAllCommodities()
+                .Where(cbo => cbo.StorageId == id);
+
+            var model = new StorageBO(storage, storedCommodities);
+
+            var maker = new ReportMaker(_tempPath);
+
+            var res = maker.MakeInventory(model).Split('\\', '/').Last();
+
+            return Redirect("~/temp/" + res + "." + type);
         }
 
     }

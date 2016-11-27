@@ -28,6 +28,7 @@
             <th width="50%">
                 Items
             </th>
+            <th> </th>
         </tr>
     </thead>
     <tbody>
@@ -59,6 +60,10 @@
                 </div>
                 
                 
+            </td>
+            <td>
+                <a asp-controller="Reports" asp-action="ShippmentReport" asp-route-id="@item.ShippingId" asp-route-type="pdf">PDF</a> | 
+                <a asp-controller="Reports" asp-action="ShippmentReport" asp-route-id="@item.ShippingId" asp-route-type="tex">TeX</a>
             </td>
         </tr>
 }
