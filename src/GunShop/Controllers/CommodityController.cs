@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GunShop.Data;
+using GunShop.Models;
 using GunShop.Services;
 using GunShop.Services.Interfaces;
 using GunShop.ViewModels.CommodityViewModels;
@@ -31,6 +32,27 @@ namespace GunShop.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
             _chartService = chartService;
             _categorizationService = categorizationService;
+        }
+
+        public Storage RootStorage
+        {
+            get
+            {
+                var storage = _context.Storages.FirstOrDefault(s => s.Name == "ROOT");
+                if (storage == null)
+                {
+                    storage = new Storage
+                    {
+                        Adress = "Nowhere",
+                        Coordinates = "0;0;0",
+                        Name = "ROOT"
+                    };
+
+                    _context.Storages.Add(storage);
+                    _context.SaveChanges();
+                }
+                return storage;
+            }
         }
 
         [HttpGet]
@@ -135,6 +157,31 @@ namespace GunShop.Controllers
                 ).ToArray();
 
             return View(commodityTypeBO);
+        }
+
+        [HttpPost]
+        public IActionResult AddCommoditiesOfType(int commodityTypeId, int count)
+        {
+            var commodityType = _context.CommoditiesTypes
+                .FirstOrDefault(ct => ct.Id == commodityTypeId);
+
+            if (commodityType == null)
+            {
+                return Content("Not Found commodity type " + commodityTypeId);
+            }
+            for (int i = 0; i < count; i++)
+            {
+                _context.Commodities.Add(new Commodity
+                {
+                    CommodityTypeId = commodityTypeId,
+                    StorageId = RootStorage.Id,
+                    OrderId = null
+                });
+            }
+           
+            _context.SaveChanges();
+            return RedirectToAction("Storage", "Location", new {storageId = RootStorage.Id});
+
         }
 
     }
