@@ -5,6 +5,7 @@ function loadChartsStatistic() {
     $.get({
         url: "/Statistics/ChartSizes",
         success: function (data) {
+            console.log("statistic 1 loaded");
             createPieChart("chartsChart", data, e => "Customer " + e.CustomerId, e => e.Count);
         }
     });
@@ -15,7 +16,8 @@ function loadStoragesStatistic() {
 
     $.get({
         url: "/Statistics/StoragesFilled",
-        success: function(data) {
+        success: function (data) {
+            console.log("statistic 2 loaded");
             createPieChart("storagesChart", data, e => "Storage " + e.StorageId, e => e.Count);
         }
     });
@@ -27,6 +29,7 @@ function loadManufacturersStatistic() {
     $.get({
         url: "/Statistics/ManufacturersFilled",
         success: function (data) {
+            console.log("statistic 3 loaded");
             createPieChart("manufacturersChart", data, e => "Manufacturer " + e.ManufacturerId, e => e.Count);
         }
     });

@@ -86,8 +86,8 @@ namespace GunShop.Controllers
                 _context.Shops.Add(newShop);
                 _context.SaveChanges();
             }
-            
-            return View(model);
+
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
