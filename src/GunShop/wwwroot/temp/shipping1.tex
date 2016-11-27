@@ -1,0 +1,33 @@
+
+\documentclass{article} 
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+
+\newcounter{cnt}
+\setcounter{cnt}{1}
+
+
+\begin{document}
+
+\hfil{\Huge\bf Gun Shop Inc.}\hfil
+\bigskip
+\hrule
+\bigskip
+
+123 Broadway \hfill (000) 111-1111 \\
+City, State 12345 \hfill customers@gunshop.com\\ \\
+
+\hfill{\bf Shippment 1}\hfill
+\bigskip
+
+{\bf From Storage:}   Central Shop\_Storage(Main Street,1 (Boston))\\
+{\bf To Storage:}  Old Storage(Java Street 250) \\
+{\bf Author:}  me \\ 
+{\bf Date:}  24.11.2016 12:58:25 \\
+\begin{center}
+\begin{tabular}{ c c c c c c c }
+  Item & Id & Model & Manufacturer & Qty & Price & Total  \\[2ex]
+\hline\\
+\arabic{cnt} & 5 & SW 22& Smith \& Wesson(USA)& 3 & 12.50 & 37,5 \\ [2ex]\arabic{cnt} & 8 & MP 380& Smith \& Wesson(USA)& 1 & 12.50 & 12,5 \\ [2ex]\arabic{cnt} & 11 & RM 200& Rheinmetall(Germany)& 3 & 12.50 & 37,5 \\ [2ex]\hline\\&&&&&Total: 87,5&\end{tabular}\end{center}\end{document}

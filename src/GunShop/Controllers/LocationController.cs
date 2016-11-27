@@ -215,6 +215,7 @@ namespace GunShop.Controllers
             return RedirectToAction("Index");
         }
 
+        
 
 
         private IEnumerable<CommodityBO> GetCommoditiesInStorage(int storageId)
