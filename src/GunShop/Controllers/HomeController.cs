@@ -33,7 +33,7 @@ namespace GunShop.Controllers
         {
             _context = context;
             _commoditiesService = commoditiesService;
-            _logger = loggerFactory.CreateLogger<AccountController>();
+            _logger = loggerFactory.CreateLogger<HomeController>();
             _categorizationService = categorizationService;
         }
 
