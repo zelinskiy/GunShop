@@ -21,5 +21,15 @@ namespace GunShop.ViewModels.LocationViewModels
         [RegularExpression(@"^[0-9;]{1,}$")]
         public string SelectedCommoditiesIds { get; set; }        
         public int StorageBId { get; set; }
+
+        public StorageViewModel(Storage storage)
+        {
+            Adress = storage.Adress;
+            Coordinates = storage.Coordinates;
+            Id = storage.Id;
+            Name = storage.Name;
+        }
+
+        public StorageViewModel() {}
     }
 }
