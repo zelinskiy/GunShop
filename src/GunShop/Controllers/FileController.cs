@@ -30,23 +30,18 @@ namespace GunShop.Controllers
         {
             string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             int len = 10;
-
-            //Changing filename to random
             var filename = file.FileName;
             var extension = filename.Split('.').Last();
             filename = filename.Replace(extension, "");
             filename = new string(Enumerable.Repeat(chars, len)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
             filename = filename + "." + extension;
-
-
             var uploads = Path.Combine(hostingEnvironment.WebRootPath, "temp");
             var filepath = Path.Combine(uploads, filename);
             using (var fileStream = new FileStream(filepath, FileMode.Create))
             {
                 await file.CopyToAsync(fileStream);
             }
-
             return filepath;
         }
 
@@ -80,13 +75,11 @@ namespace GunShop.Controllers
             {
                 throw new ArgumentException("File not found!");
             }
-
             XmlSerializer writer = new XmlSerializer(typeof(List<T>));
             using (var file = new StreamReader(new FileStream(filePath, FileMode.Open)))
             {
                 return (List<T>)writer.Deserialize(file);
             }
         }
-
     }
 }
