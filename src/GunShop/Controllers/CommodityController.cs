@@ -9,6 +9,7 @@ using GunShop.Services.Interfaces;
 using GunShop.ViewModels.CommodityViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace GunShop.Controllers
 {

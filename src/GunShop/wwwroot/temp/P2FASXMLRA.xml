@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfManufacturer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Manufacturer>
+    <Name>M1</Name>
+    <Country>C1</Country>
+  </Manufacturer>
+  <Manufacturer>
+    <Name>M2</Name>
+    <Country>C2</Country>
+  </Manufacturer>
+  <Manufacturer>
+    <Name>M3</Name>
+    <Country>C3</Country>
+  </Manufacturer>
+  <Manufacturer>
+    <Name>M3</Name>
+    <Country>C3</Country>
+  </Manufacturer>
+  <Manufacturer>
+    <Name>M3</Name>
+    <Country>C3</Country>
+  </Manufacturer>
+</ArrayOfManufacturer>

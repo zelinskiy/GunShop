@@ -3,6 +3,29 @@
     ViewData["Title"] = "Home Page";
 }
 
+<script>
+    function uploadManufacturers(){
+        var data = new FormData($("#uploadForm")[0]);
+
+        $.ajax({
+            url: "/File/AddManufacturersXML",
+            type: "POST",
+            data: data,
+            contentType: false,
+            dataType: false,
+            processData: false,
+            success: function (r) {
+                alert("Added " + r + " manufacturers");
+            }
+        });
+    }
+
+
+    function uploadXMLManufacturers(formId, callback) {
+        
+    }
+</script>
+
 @{
     <h1><a asp-controller="Commodity" asp-action="AllCommodityTypes">Shop</a></h1>
     <h1><a asp-controller="Commodity" asp-action="AddManufacturer">Add Manufacturer</a></h1>
@@ -14,4 +37,7 @@
     <h1><a asp-controller="Location" asp-action="AllShippings">Shippings</a></h1>
     <h1><a asp-controller="Home" asp-action="ExecuteSql">SQL</a></h1>
     <h1><a asp-controller="Statistics" asp-action="Index">Statistics</a></h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" onchange="uploadManufacturers()" />
+    </form>
 }
