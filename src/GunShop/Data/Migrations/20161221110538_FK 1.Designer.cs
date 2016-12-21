@@ -8,9 +8,10 @@ using GunShop.Data;
 namespace GunShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161221110538_FK 1")]
+    partial class FK1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rc2-20901")
@@ -180,10 +181,6 @@ namespace GunShop.Data.Migrations
 
                     b.HasKey("CommodityTypeId", "CategoryId");
 
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("CommodityTypeId");
-
                     b.ToTable("CommoditiesTypesInCathegories");
                 });
 
@@ -229,8 +226,6 @@ namespace GunShop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
-
                     b.ToTable("Orders");
                 });
 
@@ -249,10 +244,6 @@ namespace GunShop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StorageAId");
-
-                    b.HasIndex("StorageBId");
-
                     b.ToTable("Shippings");
                 });
 
@@ -263,10 +254,6 @@ namespace GunShop.Data.Migrations
                     b.Property<int>("ShippingId");
 
                     b.HasKey("CommodityId", "ShippingId");
-
-                    b.HasIndex("CommodityId");
-
-                    b.HasIndex("ShippingId");
 
                     b.ToTable("ShippingRows");
                 });
@@ -285,8 +272,6 @@ namespace GunShop.Data.Migrations
                     b.Property<int>("StorageId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("StorageId");
 
                     b.ToTable("Shops");
                 });
@@ -425,25 +410,29 @@ namespace GunShop.Data.Migrations
                 {
                     b.HasOne("GunShop.Models.Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GunShop.Models.CharacteristicValue", b =>
                 {
                     b.HasOne("GunShop.Models.Characteristic")
                         .WithMany()
-                        .HasForeignKey("CharacteristicId");
+                        .HasForeignKey("CharacteristicId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GunShop.Models.CommodityType")
                         .WithMany()
-                        .HasForeignKey("CommodityTypeId");
+                        .HasForeignKey("CommodityTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GunShop.Models.Commodity", b =>
                 {
                     b.HasOne("GunShop.Models.CommodityType")
                         .WithMany()
-                        .HasForeignKey("CommodityTypeId");
+                        .HasForeignKey("CommodityTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GunShop.Models.Order")
                         .WithMany()
@@ -451,97 +440,58 @@ namespace GunShop.Data.Migrations
 
                     b.HasOne("GunShop.Models.Storage")
                         .WithMany()
-                        .HasForeignKey("StorageId");
+                        .HasForeignKey("StorageId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GunShop.Models.CommodityInChart", b =>
                 {
                     b.HasOne("GunShop.Models.Commodity")
                         .WithMany()
-                        .HasForeignKey("CommodityId");
+                        .HasForeignKey("CommodityId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GunShop.Models.Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerId");
-                });
-
-            modelBuilder.Entity("GunShop.Models.CommodityTypeInCathegory", b =>
-                {
-                    b.HasOne("GunShop.Models.Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("GunShop.Models.CommodityType")
-                        .WithMany()
-                        .HasForeignKey("CommodityTypeId");
-                });
-
-            modelBuilder.Entity("GunShop.Models.Order", b =>
-                {
-                    b.HasOne("GunShop.Models.Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId");
-                });
-
-            modelBuilder.Entity("GunShop.Models.Shipping", b =>
-                {
-                    b.HasOne("GunShop.Models.Storage")
-                        .WithMany()
-                        .HasForeignKey("StorageAId");
-
-                    b.HasOne("GunShop.Models.Storage")
-                        .WithMany()
-                        .HasForeignKey("StorageBId");
-                });
-
-            modelBuilder.Entity("GunShop.Models.ShippingRow", b =>
-                {
-                    b.HasOne("GunShop.Models.Commodity")
-                        .WithMany()
-                        .HasForeignKey("CommodityId");
-
-                    b.HasOne("GunShop.Models.Shipping")
-                        .WithMany()
-                        .HasForeignKey("ShippingId");
-                });
-
-            modelBuilder.Entity("GunShop.Models.Shop", b =>
-                {
-                    b.HasOne("GunShop.Models.Storage")
-                        .WithMany()
-                        .HasForeignKey("StorageId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("GunShop.Models.ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
                 {
                     b.HasOne("GunShop.Models.ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GunShop.Models.ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }

@@ -13,5 +13,8 @@ namespace GunShop.Models
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime DateTime { get; set; }
+
+        [ForeignKey("CustomerId")]
+        public Customer Customer { get; set; }
     }
 }

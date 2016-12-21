@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,6 +14,12 @@ namespace GunShop.Models
 
         [Key]
         public int CommodityId { get; set; }
+
+        [ForeignKey("ShippingId")]
+        public Shipping Shipping { get; set; }
+
+        [ForeignKey("CommodityId")]
+        public Commodity Commodity { get; set; }
 
     }
 }

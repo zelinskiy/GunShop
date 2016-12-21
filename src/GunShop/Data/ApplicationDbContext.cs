@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using GunShop.Models;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace GunShop.Data
 {
@@ -37,7 +38,7 @@ namespace GunShop.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
+            
             builder.Entity<CommodityInChart>()
                 .HasKey(cic => new { cic.CommodityId, cic.CustomerId });
             builder.Entity<CommodityTypeInCathegory>()
@@ -46,6 +47,13 @@ namespace GunShop.Data
                 .HasKey(cv => new { cv.CommodityTypeId, cv.CharacteristicId });
             builder.Entity<ShippingRow>()
                 .HasKey(sr => new { sr.CommodityId, sr.ShippingId });
+
+            foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
+            base.OnModelCreating(builder);
         }
 
         public DbSet<Storage> Storage { get; set; }
