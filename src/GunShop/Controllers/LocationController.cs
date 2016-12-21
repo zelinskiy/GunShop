@@ -86,8 +86,8 @@ namespace GunShop.Controllers
                 _context.Shops.Add(newShop);
                 _context.SaveChanges();
             }
-            
-            return View(model);
+
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -211,6 +211,88 @@ namespace GunShop.Controllers
                 return NotFound(storageId.ToString() + " storage not found");
             }
             _context.Storages.Remove(storage);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult UpdateStorage(int storageId)
+        {
+            var storage = _context.Storages.FirstOrDefault(s => s.Id == storageId);
+            if (storage == null)
+            {
+                return NotFound(storageId.ToString() + " storage not found");
+            }
+
+            return View(storage);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateStorage(Storage storage)
+        {
+            var oldStorage = _context.Storages.FirstOrDefault(s => s.Id == storage.Id);
+            if (oldStorage == null)
+            {
+                return NotFound(storage.Id + " storage not found");
+            }
+
+            var associatedShop = _context.Shops.FirstOrDefault(s => s.StorageId== storage.Id);
+
+            if (associatedShop == null)
+            {
+                oldStorage.Coordinates = storage.Coordinates;
+                oldStorage.Adress = storage.Adress;
+            }
+
+            oldStorage.Name = storage.Name;
+
+            
+
+            _context.Storages.Update(oldStorage);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult UpdateShop(int shopId)
+        {
+            var shop = _context.Shops.FirstOrDefault(s => s.Id == shopId);
+            if (shop == null)
+            {
+                return NotFound(shopId + " shop not found");
+            }
+
+
+
+            return View(shop);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateShop(Shop shop)
+        {
+            var oldShop = _context.Shops.FirstOrDefault(s => s.Id == shop.Id);
+            if (oldShop == null)
+            {
+                return NotFound(shop.Id + " storage not found");
+            }
+
+            oldShop.Adress = shop.Adress;
+            oldShop.Name = shop.Name;
+            oldShop.Coordinates = shop.Coordinates;
+
+
+            var associatedStorage = _context.Storages.FirstOrDefault(s => s.Id == shop.StorageId);
+
+            if (associatedStorage != null)
+            {
+                associatedStorage.Adress = shop.Adress;
+                associatedStorage.Coordinates = shop.Coordinates;
+                _context.Storages.Update(associatedStorage);
+            }
+
+            
+            _context.Shops.Update(oldShop);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }

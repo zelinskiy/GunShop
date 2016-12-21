@@ -76,6 +76,7 @@
                 @shop.Name
             </td>
             <td>
+                <a asp-action="UpdateShop" asp-route-shopId="@shop.Id">Update</a> | 
                 <a asp-action="DeleteShop" asp-route-shopId="@shop.Id">Delete</a>
             </td>
         </tr>
@@ -120,6 +121,7 @@
                     @storage.StoredCommodities.Count()
                 </td>
                 <td>
+                    <a asp-action="UpdateStorage" asp-route-storageId="@storage.Id">Update</a> | 
                     <a asp-action="DeleteStorage" asp-route-storageId="@storage.Id">Delete</a>
                 </td>
             </tr>

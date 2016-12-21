@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Statistics";
+}
+
+<h2>Statistics</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+            <canvas style="width: 100%;"  id="chartsChart"></canvas>
+        </div>
+        <div class="col-sm-4">
+            <h2>Items per Chart</h2>
+        </div>
+    </div>
+    <br /><br /><br /><br /><br />
+    <div class="row">
+        <div class="col-sm-8">
+            <canvas style="width: 100%;" id="storagesChart"></canvas>
+        </div>
+        <div class="col-sm-4">
+            <h2>Items per Storage</h2>
+        </div>
+    </div>
+    <br /><br /><br /><br /><br />
+    <div class="row">
+        <div class="col-sm-8">
+            <canvas style="width: 100%;" id="manufacturersChart"></canvas>
+        </div>
+        <div class="col-sm-4">
+            <h2>Items per Manufacturer</h2>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="/js/Statistics.js"></script>
+}

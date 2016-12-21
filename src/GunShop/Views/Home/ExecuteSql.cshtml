@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewData["Title"] = "Execute Sql";
+}
+
+
+<form type="POST" asp-action="ExecuteSql">
+    <div class="form-horizontal">
+        <h4>Query</h4>
+        <hr />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <textarea name="query" class="form-control" placeholder="SELECT * FROM Commodities">@ViewData["query"]</textarea>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Execute" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+@if (ViewData["error"] != null)
+{
+    <span class="text-danger">@ViewData["error"]</span>
+}
+else
+{
+    <table class="table" id="allShippingsTable">
+        @{
+            var allRows = ViewData["result"].ToString().Split('\n');
+            var dataRows = allRows.Skip(1).Select(r => r.Split(','));
+            var headers = allRows.First().Split(',');
+        }
+        <thead>
+            <tr>
+                @foreach (var h in headers)
+                {
+                    <th>
+                        @h
+                    </th>
+                }
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in dataRows)
+            {
+                <tr>
+                    @foreach (var cell in row)
+                    {
+                        <td>
+                            @cell
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+            }

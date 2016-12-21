@@ -7,6 +7,9 @@
 <br />
 <p><a asp-action="Index" >return</a></p>
 
+<p><a asp-controller="Reports" asp-action="StorageInventoryReport" asp-route-id="@Model.Id"asp-route-type="pdf">Get PDF report</a></p>
+<p><a asp-controller="Reports" asp-action="StorageInventoryReport" asp-route-id="@Model.Id" asp-route-type="tex">Get TeX report</a></p>
+
 <h2>Storage @Model.Name (#@Model.Id)</h2>
 <p>Stored: @Model.Commodities.Count()</p>
 

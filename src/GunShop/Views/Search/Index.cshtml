@@ -35,7 +35,7 @@
         </p>
         }
     </div>
-    <table class="table">
+    <table id="searchResults" class="table" >
         <thead>
             <tr>
                 <th>
@@ -58,7 +58,22 @@
                         @Html.DisplayFor(modelItem => item.Model)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Size)
+                        @{
+                            var dims = item.Size.Split(';');
+                            var x = 0.0;
+                            var y = 0.0;
+                            var z = 0.0;
+                            var v = 0.0;
+                            if (dims.Count() == 3)
+                            {
+                                double.TryParse(dims[0], out x);
+                                double.TryParse(dims[1], out y);
+                                double.TryParse(dims[2], out z);
+                                v = x*y*z / 1000.0;
+                            }
+
+                        }
+                        @(v)(@x,@y,@z)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Weight)

@@ -7,31 +7,32 @@
 
 <h2>AllShippings</h2>
 
-<table class="table">
+<table class="table" id="allShippingsTable">
     <thead>
-        <tr>
-            <th>
-                Author
-            </th>
-            <th>
-                Date
-            </th>
-            <th>
-                Storage A
-            </th>
-            <th>
-                Storage B
-            </th>
-            <th>
-                Amount
-            </th>
-            <th width="50%">
-                Items
-            </th>
-        </tr>
+    <tr>
+        <th>
+            Author
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Storage A
+        </th>
+        <th>
+            Storage B
+        </th>
+        <th>
+            Amount
+        </th>
+        <th width="50%">
+            Items
+        </th>
+        <th> </th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @item.AuthorId
@@ -60,7 +61,16 @@
                 
                 
             </td>
+            <td>
+                <a asp-controller="Reports" asp-action="ShippmentReport" asp-route-id="@item.ShippingId" asp-route-type="pdf">PDF</a> | 
+                <a asp-controller="Reports" asp-action="ShippmentReport" asp-route-id="@item.ShippingId" asp-route-type="tex">TeX</a>
+            </td>
         </tr>
-}
+    }
     </tbody>
 </table>
+
+
+@section Scripts{
+    <script src="/js/AllShippings.js"></script>
+}

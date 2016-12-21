@@ -7,6 +7,15 @@
 
 <h2>View</h2>
 
+<form asp-controller="Commodity" asp-action="AddCommoditiesOfType">
+    <p>
+        Count: <input type="number" name="count" /> 
+        <input type="hidden" name="commodityTypeId" value="@Model.Id" />
+        <button type="submit">Add</button>
+    </p>
+</form>
+<p><a asp-controller="Commodity" asp-action="AddCommoditiesOfType" asp-route-commodityTypeId ="@Model.Id"></a></p>
+
 <div>
     <h4>Item @Model.Model</h4>
     <hr />
