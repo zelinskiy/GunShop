@@ -7,9 +7,11 @@ using GunShop.Services;
 using GunShop.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GunShop.Controllers
 {
+    [Authorize(Roles = "EMPLOYEE,ADMIN")]
     public class StatisticsController : Controller
     {
 

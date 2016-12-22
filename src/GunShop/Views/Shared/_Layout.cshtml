@@ -33,7 +33,11 @@
                     <li><a asp-controller="Commodity" asp-action="AllCommodityTypes">Shop</a></li>
                     <li><a asp-controller="Search" asp-action="Index">Search</a></li>
                     <li><a asp-controller="Location" asp-action="Index">Shops</a></li>
-                    <li><a asp-controller="Home" asp-action="Index">Admin</a></li>
+                    @if (User.IsInRole("ADMIN"))
+                    {
+                        <li><a asp-controller="Home" asp-action="Admin">Admin</a></li>
+                    }
+                    
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a asp-controller="Chart" asp-action="MyChart">Chart</a></li>

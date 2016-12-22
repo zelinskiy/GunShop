@@ -5,7 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form asp-action="Index">
+@if (User.IsInRole("ADMIN"))
+{
+    <form asp-action="Index">
     <div class="form-horizontal">
         <h4>Add</h4>
         <hr />
@@ -46,6 +48,9 @@
 </form>
 
 
+}
+
+
 <h2>Shops</h2>
 
 <table class="table">
@@ -75,10 +80,14 @@
             <td>
                 @shop.Name
             </td>
-            <td>
-                <a asp-action="UpdateShop" asp-route-shopId="@shop.Id">Update</a> | 
-                <a asp-action="DeleteShop" asp-route-shopId="@shop.Id">Delete</a>
-            </td>
+            @if (User.IsInRole("ADMIN"))
+            {
+                <td>
+                    <a asp-action="UpdateShop" asp-route-shopId="@shop.Id">Update</a> |
+                    <a asp-action="DeleteShop" asp-route-shopId="@shop.Id">Delete</a>
+                </td>
+            }
+            
         </tr>
 }
     </tbody>
@@ -98,9 +107,7 @@
             <th>
                 Name
             </th>
-            <th>
-                Stored
-            </th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -114,16 +121,27 @@
                 <td>
                     @storage.Coordinates
                 </td>
-                <td>
-                    <a asp-action="Storage" asp-route-storageId="@storage.Id">@storage.Name</a>
-                </td>
-                <td>
-                    @storage.StoredCommodities.Count()
-                </td>
-                <td>
-                    <a asp-action="UpdateStorage" asp-route-storageId="@storage.Id">Update</a> | 
-                    <a asp-action="DeleteStorage" asp-route-storageId="@storage.Id">Delete</a>
-                </td>
+                @if (!User.IsInRole("ADMIN") && !User.IsInRole("EMPLOYEE"))
+                {
+                    <td>
+                        @storage.Name
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-action="Storage" asp-route-storageId="@storage.Id">@storage.Name</a>
+                    </td>
+                    <td>
+                        Stored: @storage.StoredCommodities.Count()
+                    </td>
+                    <td>
+                        <a asp-action="UpdateStorage" asp-route-storageId="@storage.Id">Update</a> |
+                        <a asp-action="DeleteStorage" asp-route-storageId="@storage.Id">Delete</a>
+                    </td>
+
+                }
+                
             </tr>
         }
     </tbody>

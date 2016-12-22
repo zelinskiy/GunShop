@@ -10,9 +10,11 @@ using GunShop.ViewModels.LocationViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GunShop.Controllers
 {
+    [Authorize(Roles = "EMPLOYEE,ADMIN")]
     public class ReportsController : Controller
     {
 
@@ -35,7 +37,7 @@ namespace GunShop.Controllers
             _appEnvironment = appEnvironment;
             _tempPath = Path.Combine(_appEnvironment.WebRootPath, "temp");
         }
-
+        
         public IActionResult ShippmentReport(int id, string type = "pdf")
         {
             var shipping = _context.Shippings.FirstOrDefault(s => s.Id == id);
@@ -74,7 +76,7 @@ namespace GunShop.Controllers
             return Redirect("~/temp/" + res + "." + type);
 
         }
-
+        
         public IActionResult StorageInventoryReport(int id, string type = "pdf")
         {
             var storage = _context.Storages.FirstOrDefault(s => s.Id == id);

@@ -9,6 +9,7 @@ using GunShop.Services.Interfaces;
 using GunShop.ViewModels.CommodityViewModels;
 using GunShop.ViewModels.LocationViewModels;
 using GunShop.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GunShop.Controllers
 {
@@ -44,6 +45,7 @@ namespace GunShop.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles ="ADMIN")]
         public IActionResult Index(IndexViewModel model)
         {
             model.Storages = _context.Storages
@@ -91,6 +93,7 @@ namespace GunShop.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "EMPLOYEE,ADMIN")]
         public IActionResult Storage(int storageId)
         {
             var storage = _context.Storages.FirstOrDefault(s => s.Id == storageId);
@@ -113,6 +116,7 @@ namespace GunShop.Controllers
         }
         
         [HttpPost]
+        [Authorize(Roles = "EMPLOYEE,ADMIN")]
         public IActionResult Storage(StorageViewModel model)
         {
             var selectedCommoditiesIds = model.SelectedCommoditiesIds
@@ -158,6 +162,7 @@ namespace GunShop.Controllers
 
         }
 
+        [Authorize(Roles = "EMPLOYEE,ADMIN")]
         public IActionResult AllShippings()
         {
             var shippings = _context.Shippings.Select(s => new ShippingViewModel()
@@ -186,6 +191,7 @@ namespace GunShop.Controllers
 
         }
 
+        [Authorize(Roles = "ADMIN")]
         public IActionResult DeleteShop(int shopId)
         {
             var shop = _context.Shops.FirstOrDefault(s => s.Id == shopId);
@@ -203,6 +209,7 @@ namespace GunShop.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "ADMIN")]
         public IActionResult DeleteStorage(int storageId)
         {
             var storage = _context.Storages.FirstOrDefault(s => s.Id == storageId);
@@ -216,6 +223,7 @@ namespace GunShop.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult UpdateStorage(int storageId)
         {
             var storage = _context.Storages.FirstOrDefault(s => s.Id == storageId);
@@ -228,6 +236,7 @@ namespace GunShop.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult UpdateStorage(Storage storage)
         {
             var oldStorage = _context.Storages.FirstOrDefault(s => s.Id == storage.Id);
@@ -255,6 +264,7 @@ namespace GunShop.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult UpdateShop(int shopId)
         {
             var shop = _context.Shops.FirstOrDefault(s => s.Id == shopId);
@@ -269,6 +279,7 @@ namespace GunShop.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult UpdateShop(Shop shop)
         {
             var oldShop = _context.Shops.FirstOrDefault(s => s.Id == shop.Id);

@@ -9,9 +9,11 @@ using GunShop.Services.Interfaces;
 using GunShop.ViewModels.CategoryViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GunShop.Controllers
 {
+    [Authorize(Roles = "ADMIN")]
     public class CategoryController : Controller
     {
         ApplicationDbContext _context;

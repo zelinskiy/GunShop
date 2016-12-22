@@ -13,6 +13,8 @@ using GunShop.Services;
 using System.Collections.Generic;
 using GunShop.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GunShop.Controllers
 {
@@ -36,18 +38,19 @@ namespace GunShop.Controllers
             _logger = loggerFactory.CreateLogger<HomeController>();
             _categorizationService = categorizationService;
         }
-
-
-        public IActionResult Index(int? categoryId)
+        
+        public IActionResult Index()
         {
-            var model = new IndexViewModel();
-            model.CommodityBOs = _commoditiesService.GetAllCommodities();
-
-            
-            return View(model);
+            return RedirectToAction("AllCommodityTypes", "Commodity");
         }
-        
-        
+
+        [Authorize(Roles = "ADMIN")]
+        public IActionResult Admin()
+        {
+            return View();
+        }
+
+
         [HttpPost]
         public IActionResult SetLanguage(string culture, string returnUrl)
         {
@@ -61,6 +64,7 @@ namespace GunShop.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult ExecuteSql()
         {
             ViewData["result"] = "";
@@ -70,6 +74,7 @@ namespace GunShop.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult ExecuteSql(string query)
         {
             var forbiddenWords = new string[]
@@ -107,6 +112,22 @@ namespace GunShop.Controllers
             ViewData["result"] = result;
 
             return View();
+        }
+
+        public IActionResult SetupInit()
+        {
+            if(_context.Roles.FirstOrDefault(r=>r.NormalizedName == "ADMIN") == null)
+            {
+                _context.Roles.Add(new IdentityRole("ADMIN"));
+                _context.SaveChanges();
+            }
+            if (_context.Roles.FirstOrDefault(r => r.NormalizedName == "EMPLOYEE") == null)
+            {
+                _context.Roles.Add(new IdentityRole("EMPLOYEE"));
+                _context.SaveChanges();
+            }
+            return Content("OK");
+            
         }
 
         public IActionResult Error()

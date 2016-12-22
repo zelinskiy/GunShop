@@ -6,14 +6,17 @@
 }
 
 <h2>View</h2>
+@if (User.IsInRole("ADMIN"))
+{
+    <form asp-controller="Commodity" asp-action="AddCommoditiesOfType">
+        <p>
+            Count: <input type="number" name="count" />
+            <input type="hidden" name="commodityTypeId" value="@Model.Id" />
+            <button type="submit">Add</button>
+        </p>
+    </form>
+}
 
-<form asp-controller="Commodity" asp-action="AddCommoditiesOfType">
-    <p>
-        Count: <input type="number" name="count" /> 
-        <input type="hidden" name="commodityTypeId" value="@Model.Id" />
-        <button type="submit">Add</button>
-    </p>
-</form>
 <p><a asp-controller="Commodity" asp-action="AddCommoditiesOfType" asp-route-commodityTypeId ="@Model.Id"></a></p>
 
 <div>

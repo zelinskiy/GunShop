@@ -8,6 +8,7 @@ using GunShop.Services;
 using GunShop.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GunShop.Controllers
 {
@@ -52,10 +53,6 @@ namespace GunShop.Controllers
             }
         }
 
-
-
-
-
         [HttpPost]
         public IActionResult AddCommodityToChart(int commodityTypeId)
         {
@@ -85,6 +82,7 @@ namespace GunShop.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles="ADMIN")]
         public IActionResult ClearAllAnonymousCharts()
         {
             _chartService.ClearAllAnonymousCharts();
