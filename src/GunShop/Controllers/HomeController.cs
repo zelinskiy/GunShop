@@ -137,6 +137,17 @@ namespace GunShop.Controllers
                 await _userManager.AddToRoleAsync(
                     await _userManager.FindByNameAsync(User.Identity.Name), "ADMIN");
             }
+            var rootStorage = _context.Storages.FirstOrDefault(s => s.Name == "ROOT");
+            if (rootStorage == null)
+            {
+                _context.Storages.Add(new Storage()
+                {
+                    Name = "ROOT",
+                    Adress = "Nowhere",
+                    Coordinates = "0,0,0"
+                });
+                _context.SaveChanges();
+            }
             
             
             return Content("OK");
