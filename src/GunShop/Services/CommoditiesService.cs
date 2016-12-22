@@ -35,6 +35,7 @@ namespace GunShop.Services
                 Price = ct.Price,
                 ManufacturerId = ct.ManufacturerId
             });
+
             await _context.SaveChangesAsync();
             _logger.LogWarning($"Added Commiodity {ct.Model}");
 
@@ -99,7 +100,8 @@ namespace GunShop.Services
                     .AddAvailableCount(_context.Commodities
                         .Where(c=>!_context.CommoditiesInCharts
                             .Select(cic=>cic.CommodityId)
-                            .Contains(c.Id))
+                            .Contains(c.Id)
+                            && c.OrderId == null)
                         .Count(c => c.CommodityTypeId == ct.Id))
                     .AddCharacteristics(allCharacteristicsPreviews
                         .Where(cp => cp.CommodityTypeId == ct.Id)

@@ -4,6 +4,13 @@
     ViewData["Title"] = "AllCommodityTypes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<h1>
+    @if (Model.Count() > 0)
+    {
+        <a class="btn btn-default" asp-controller="Orders" asp-action="MakeOrder">Make Order</a>
+    }    
+    <a class="btn btn-default" asp-controller="Orders" asp-action="My">Orders</a></h1>
 <h1>Sum: @Model.Sum(item => item.Price)</h1>
 <table class="table" id="allCommoditiesTable">
     <thead>

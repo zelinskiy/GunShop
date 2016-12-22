@@ -35,6 +35,21 @@ namespace GunShop.Controllers
             _categorizationService = categorizationService;
         }
 
+        public Category RootCategory
+        {
+            get
+            {
+                var rootCategory = _context.Categories.FirstOrDefault(c => c.MasterCategoryId == null);
+                if(rootCategory == null)
+                {
+                    rootCategory = new Category() { Name = "ROOT", MasterCategoryId = null };
+                    _context.Categories.Add(rootCategory);
+                    _context.SaveChanges();
+                }
+                return rootCategory;
+            }
+        }
+
         public Storage RootStorage
         {
             get
@@ -128,8 +143,7 @@ namespace GunShop.Controllers
             }
             else
             {
-                var rootCategory = _context.Categories.FirstOrDefault(c => c.MasterCategoryId == null);
-                model.SubCategories = _categorizationService.GetSubCategories(rootCategory.Id);
+                model.SubCategories = _categorizationService.GetSubCategories(RootCategory.Id);
                 model.CommoditiesTypes = _commoditiesService.GetAllCommoditiesTypes();
             }
 

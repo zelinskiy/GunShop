@@ -1,0 +1,57 @@
+@model IEnumerable<GunShop.ViewModels.UsersViewModel.UserViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Customer Id
+            </th>
+            <th>
+                Application User Id
+            </th>
+            <th>
+               Email
+            </th>
+            <th>
+                Roles
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var user in Model) {
+        <tr>
+            <td>
+                @user.Id
+            </td>
+            <td>
+                @user.ApplicationUserId
+            </td>
+            <td>
+                @user.Email
+            </td>
+            <td>
+                @string.Join(";",user.Roles)
+            </td>
+            <td>
+                <a asp-controller="Users" 
+                   asp-action="ToggleRole"
+                   asp-route-role="ADMIN"
+                   asp-route-userid="@user.ApplicationUserId">Admin</a>
+                <a asp-controller="Users"
+                   asp-action="ToggleRole"
+                   asp-route-role="EMPLOYEE"
+                   asp-route-userid="@user.ApplicationUserId">Employee</a>
+
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

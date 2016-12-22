@@ -1,0 +1,56 @@
+@model IEnumerable<GunShop.ViewModels.OrdersViewModels.OrderViewModel>
+
+@{
+    ViewData["Title"] = "Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Orders</h2>
+
+
+@foreach (var order in Model.Where(o=>o.Commodities!=null))
+{
+    <h1>
+        ORDER @order.Id (At @order.DateTime by @order.Customer.Email)
+        <a class="btn btn-default"
+           asp-controller="Orders"
+           asp-action="RemoveOrder"
+           asp-route-orderId="@order.Id">Remove</a>
+    </h1>    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Model
+                </th>
+                <th>
+                    Price
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>            
+            @foreach (var c in order.Commodities)
+            {
+                <tr>
+                    <td>
+                        @c.Model
+                    </td>
+                    <td>
+                        @c.Price
+                    </td>
+                    <td>
+                        <a class="btn btn-default" 
+                           asp-controller="Orders" 
+                           asp-action="RemoveFromOrder" 
+                           asp-route-commodityId="@c.Id">Remove</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    
+
+}
+

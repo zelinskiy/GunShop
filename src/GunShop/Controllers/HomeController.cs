@@ -15,6 +15,7 @@ using GunShop.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace GunShop.Controllers
 {
@@ -24,10 +25,12 @@ namespace GunShop.Controllers
         ApplicationDbContext _context;
         ICommoditiesService _commoditiesService;
         CategorizationService _categorizationService;
+        UserManager<ApplicationUser> _userManager;
         ILogger _logger;
 
         public HomeController(
             ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
             ILoggerFactory loggerFactory,
             IChartService chartService,
             ICommoditiesService commoditiesService,
@@ -37,6 +40,7 @@ namespace GunShop.Controllers
             _commoditiesService = commoditiesService;
             _logger = loggerFactory.CreateLogger<HomeController>();
             _categorizationService = categorizationService;
+            _userManager = userManager;
         }
         
         public IActionResult Index()
@@ -113,19 +117,28 @@ namespace GunShop.Controllers
 
             return View();
         }
-
-        public IActionResult SetupInit()
+        
+        [Authorize]
+        public async Task<IActionResult> SetupInit()
         {
             if(_context.Roles.FirstOrDefault(r=>r.NormalizedName == "ADMIN") == null)
             {
-                _context.Roles.Add(new IdentityRole("ADMIN"));
+                _context.Roles.Add(new IdentityRole("ADMIN") { NormalizedName = "ADMIN" });
+                await _userManager.AddToRoleAsync(_userManager.Users.First(), "ADMIN");
                 _context.SaveChanges();
             }
             if (_context.Roles.FirstOrDefault(r => r.NormalizedName == "EMPLOYEE") == null)
             {
-                _context.Roles.Add(new IdentityRole("EMPLOYEE"));
+                _context.Roles.Add(new IdentityRole("EMPLOYEE") { NormalizedName = "EMPLOYEE" });
                 _context.SaveChanges();
             }
+            if (!User.IsInRole("ADMIN"))
+            {
+                await _userManager.AddToRoleAsync(
+                    await _userManager.FindByNameAsync(User.Identity.Name), "ADMIN");
+            }
+            
+            
             return Content("OK");
             
         }

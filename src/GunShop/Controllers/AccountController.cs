@@ -41,6 +41,25 @@ namespace GunShop.Controllers
             _context = context;
         }
 
+        private int CustomerId
+        {
+            get
+            {
+                if (!Request.Cookies.ContainsKey("USERID"))
+                {
+                    var tempUser = _context.Customers.Add(new Customer { IsTemp = true });
+                    _context.SaveChanges();
+                    Response.Cookies.Append("USERID", tempUser.Entity.Id.ToString());
+                    return tempUser.Entity.Id;
+                }
+                else
+                {
+                    return int.Parse(Request.Cookies["USERID"]);
+                }
+
+            }
+        }
+
         //
         // GET: /Account/Login
         [HttpGet]
@@ -114,11 +133,12 @@ namespace GunShop.Controllers
                 if (result.Succeeded)
                 {
 
-                    var tempUser = _context.Customers.First(c => c.Id == Int32.Parse(Request.Cookies["USERID"]));
+                    var tempUser = _context.Customers.First(c => c.Id == CustomerId);
                     tempUser.IsTemp = false;
                     tempUser.ApplicationUserId = user.Id;
                     tempUser.Email = model.Email;
                     _context.Customers.Update(tempUser);
+                    _context.SaveChanges();
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link

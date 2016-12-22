@@ -10,8 +10,7 @@ namespace GunShop.Models
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        
         public DateTime DateTime { get; set; }
 
         [ForeignKey("CustomerId")]
