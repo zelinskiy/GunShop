@@ -11,6 +11,7 @@ namespace GunShop.ViewModels.CommodityViewModels
         public string Model { get; set; }
         public string Size { get; set; }
         public int Weight { get; set; }
+        public int Price { get; set; }
         public int ManufacturerId { get; set; }
 
         public string ManufacturerName { get; set; }
@@ -27,6 +28,7 @@ namespace GunShop.ViewModels.CommodityViewModels
         public CommodityBO AddType(CommodityType t)
         {
             this.Model = t.Model;
+            this.Price = t.Price;
             this.Size = t.Size;
             this.Weight = t.Weight;
             this.ManufacturerId = t.ManufacturerId;

@@ -40,6 +40,7 @@ namespace GunShop.ViewModels.CommodityViewModels
             this.Id = t.Id;
             this.Model = t.Model;
             this.Size = t.Size;
+            this.Price = t.Price;
             this.Weight = t.Weight;
             this.ManufacturerId = t.ManufacturerId;
         }

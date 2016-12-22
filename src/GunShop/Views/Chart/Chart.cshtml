@@ -4,12 +4,15 @@
     ViewData["Title"] = "AllCommodityTypes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<h1>Sum: @Model.Sum(item => item.Price)</h1>
 <table class="table" id="allCommoditiesTable">
     <thead>
     <tr>
         <th>
             Model
+        </th>
+        <th>
+            Price
         </th>
         <th></th>
     </tr>
@@ -21,6 +24,9 @@
                 @c.Model
             </td>
             <td>
+                @c.Price
+            </td>
+            <td>
                 <form asp-controller="Chart" asp-action="RemoveCommodityFromChart" method="post" asp-route-commodityId="@c.Id">
                     <button type="submit" class="btn btn-link">Remove from chart</button>
                 </form>
@@ -29,6 +35,7 @@
         </tr>
     }
     </tbody>
+    
 </table>
 
 

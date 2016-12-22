@@ -12,5 +12,6 @@ namespace GunShop.Models.Interfaces
         string Size { get; set; }
         int Weight { get; set; }
         int ManufacturerId { get; set; }
+        int Price { get; set; }
     }
 }

@@ -24,6 +24,9 @@
             Model
         </th>
         <th>
+            Price
+        </th>
+        <th>
             Sizes
         </th>
         <th>
@@ -47,6 +50,9 @@
             </td>
             <td>
                 <a asp-action ="Details" asp-route-commodityTypeId="@ct.Id">@ct.Model</a>
+            </td>
+            <td>
+                @ct.Price
             </td>
             <td>
                 @ct.Size

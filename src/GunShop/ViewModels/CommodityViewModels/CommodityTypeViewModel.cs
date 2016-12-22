@@ -62,6 +62,9 @@ namespace GunShop.ViewModels.CommodityViewModels
         [Required(ErrorMessage = "Can't be empty")]
         public int ManufacturerId { get; set; }
 
+        [Range(0, 1000000000, ErrorMessage = "Incorrect value")]
+        public int Price { get; set; }
+
         [Required(ErrorMessage = "Can't be empty")]
         public int StorageId { get; set; }
 

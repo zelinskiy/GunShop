@@ -32,6 +32,7 @@ namespace GunShop.Services
                 Model = ct.Model,
                 Size = ct.Size,
                 Weight = ct.Weight,
+                Price = ct.Price,
                 ManufacturerId = ct.ManufacturerId
             });
             await _context.SaveChangesAsync();

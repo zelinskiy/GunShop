@@ -13,6 +13,7 @@ namespace GunShop.Models
         public string Model { get; set; }
         public string Size { get; set; }
         public int Weight { get; set; }
+        public int Price { get; set; }
         public int ManufacturerId { get; set; }
         
         //public ICollection<CharacteristicValue> CharacteristicValues { get; set; }
